@@ -1,34 +1,122 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jason Liang</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tiny Projects, Big Learning — Practice Page</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="main-header">
-    <h1>Jason Liang</h1>
-    <p>年齡不是限制美好的藉口</p>
+  <!-- Navigation Menu -->
+  <nav class="nav">
+    <div class="nav-container">
+      <span class="logo">My Practice Page</span>
+      <ul class="nav-list">
+        <li><a href="#intro">Introduction</a></li>
+        <li><a href="#why">Why Small Beats Perfect</a></li>
+        <li><a href="#design">Designing a Tiny</a></li>
+        <li><a href="#feedback">Feedback Loops</a></li>
+        <li><a href="#stack">Stacking Stones</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header>
+    <div class="banner-wrap">
+      <img id="banner" class="banner" alt="Random banner" src="https://picsum.photos/seed/practice/1600/500" />
+    </div>
+    <div class="bar">
+      <div class="title">Practice Webpage • Random Banner Demo</div>
+      <div style="display:flex; gap:.5rem;">
+        <button id="newBannerBtn">New Random Banner</button>
+        <button id="downloadBtn">Open Banner</button>
+      </div>
+    </div>
   </header>
 
-  <section class="about-section">
-    <h2>關於我</h2>
-    <p>
-      嗨，我是 Jason ，一個熱愛人文、企劃、採訪的人。我的專長包括專案管理以及設計思考。希望透過這個頁面讓你更認識我。
-    </p>
+  <!-- Section 1: Introduction -->
+  <section class="section intro" id="intro">
+    <div class="container card">
+      <h1>Tiny Projects, Big Learning</h1>
+      <p class="note">Topic chosen by the AI • ~450 words</p>
+      <p>We often imagine learning as a grand staircase: heavy textbooks, long courses, and a distant
+        “someday” where everything finally makes sense. In reality, progress behaves more like a
+        collection of stepping-stones. Each small, finished project becomes one more stone across
+        the river—the shortest path from curiosity to competence.</p>
+    </div>
   </section>
 
-  <section class="contact-section">
-    <h2>聯絡方式</h2>
-    <ul>
-      <li>Email：<a href="mailto:41202008E@gapps.ntnu.edu.tw">41202008E@gapps.ntnu.edu.tw</a></li>
-      <li>Instagram：<a href="https://www.instagram.com/jason_liang_0321/" target="_blank">@jason_liang_0321</a></li>
-    </ul>
+  <!-- Section 2 -->
+  <section class="section why" id="why">
+    <div class="container card">
+      <h2>Why small beats perfect</h2>
+      <p>Tiny projects lower the psychological cost of starting. When the scope is one afternoon,
+        not one semester, you take more risks, iterate faster, and rack up completed reps. Each
+        completion deposits a little confidence in your account. Over time, those deposits compound,
+        and the work that once felt advanced becomes your new normal.</p>
+    </div>
   </section>
 
-  <footer class="footer">
-    <p>&copy; 2025 Jason Liang. 保留所有權利。</p>
+  <!-- Section 3 -->
+  <section class="section design" id="design">
+    <div class="container card">
+      <h2>Designing a “tiny” that teaches</h2>
+      <p>A good mini-project targets one clear skill and ships something visible. Build a one-page
+        website to practice layout. Record a two-minute audio clip to learn basic editing. Scrape
+        ten rows of data and chart them to understand a library’s API. What matters is that you can
+        <em>finish</em>, reflect, and repeat. Scope creep is the enemy; ruthlessly trim features until
+        the lesson can be learned today.</p>
+    </div>
+  </section>
+
+  <!-- Section 4 -->
+  <section class="section feedback" id="feedback">
+    <div class="container card">
+      <h2>Feedback loops over finish lines</h2>
+      <p>Finishing is step one; feedback is step two. Share the result with a friend, post it in a
+        community, or compare it to a reference you admire. Write down one thing that worked and one
+        thing to improve next time. This tight loop—make, show, adjust—turns scattered practice into
+        deliberate practice without the grind of perfectionism.</p>
+    </div>
+  </section>
+
+  <!-- Section 5 -->
+  <section class="section stack" id="stack">
+    <div class="container card">
+      <h2>Stacking stones</h2>
+      <p>When tiny projects stack, they create momentum and identity. You stop saying “I’m trying to
+        learn” and start saying “I build things.” That shift matters. Identity is fuel on the days
+        motivation runs low. And because each project ends with something concrete, your portfolio
+        naturally grows—an honest record of skills earned by doing.</p>
+      <p>So pick one small idea and build it today. Tomorrow, build another. The river won’t cross
+        itself, but stepping-stones are easy to lay when they’re this small.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    Built for practice. Banner images provided by <a href="https://picsum.photos/" target="_blank" rel="noopener">Picsum</a>.
   </footer>
+
+  <script>
+    (function () {
+      const banner = document.getElementById('banner');
+      const newBtn = document.getElementById('newBannerBtn');
+      const openBtn = document.getElementById('downloadBtn');
+
+      function setRandomBanner() {
+        const seed = Math.random().toString(36).slice(2);
+        const url = `https://picsum.photos/seed/${seed}/1600/500`;
+        banner.src = url + `?t=${Date.now()}`;
+      }
+
+      newBtn.addEventListener('click', setRandomBanner);
+      openBtn.addEventListener('click', () => {
+        const src = banner.src.replace(/\?t=\d+$/, '');
+        window.open(src, '_blank', 'noopener');
+      });
+    }());
+  </script>
 </body>
 </html>
