@@ -2,129 +2,167 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>五分區單頁式網頁</title>
-  <!-- Tailwind CSS -->
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="styles.css"/>
+
+  <style type="text/tailwindcss">
+    @layer base {
+      html { scroll-behavior: smooth; }
+      body { @apply bg-slate-50 text-slate-900; }
+    }
+    @layer components {
+      .site-nav { @apply fixed top-0 inset-x-0 bg-white/90 backdrop-blur shadow z-50; }
+      .nav-container { @apply container mx-auto px-4 h-14 flex items-center justify-between; }
+      .brand { @apply font-extrabold tracking-tight text-slate-900; }
+      .nav-links { @apply flex items-center gap-1; }
+      .nav-link { @apply inline-block px-3 py-2 rounded-md text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition; }
+      .btn-primary { @apply inline-block px-5 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-pink-500 to-red-500 shadow hover:from-pink-600 hover:to-red-600 transition; }
+      .btn-outline { @apply inline-block px-5 py-2 rounded-full font-semibold text-pink-600 border border-pink-500 hover:bg-pink-50 transition; }
+      .card { @apply bg-white rounded-2xl shadow p-6; }
+    }
+  </style>
 </head>
-<body class="bg-slate-50">
-  <!-- Navbar：保留原設計 -->
-  <nav id="siteNav" class="navbar fixed top-0 left-0 w-full bg-white shadow z-50">
-    <!-- 放原本的 navbar 內容 -->
+<body>
+
+  <!-- Navbar -->
+  <nav id="siteNav" class="site-nav">
+    <div class="nav-container">
+      <a href="#top" class="brand">My Single Page</a>
+      <ul class="nav-links">
+        <li><a class="nav-link" href="#s1">區段一</a></li>
+        <li><a class="nav-link" href="#s2">區段二</a></li>
+        <li><a class="nav-link" href="#s3">區段三</a></li>
+        <li><a class="nav-link" href="#s4">區段四</a></li>
+        <li><a class="nav-link" href="#s5">區段五</a></li>
+      </ul>
+    </div>
   </nav>
+  <div id="top" class="h-14"></div>
 
-  <main id="top">
-    <!-- Section 1 -->
-    <section id="s1" class="scroll-mt-24 md:scroll-mt-28">
-      <div class="min-h-[75vh] flex items-center justify-center text-center text-white bg-gradient-to-br from-rose-500 to-orange-500">
-        <div class="container mx-auto px-4 max-w-3xl">
-          <h1 class="text-4xl md:text-5xl font-extrabold">區段一</h1>
-          <p class="mt-3 opacity-90">暖色 Banner × 淺底內容</p>
-          <a href="#s2" class="btn-primary mt-6">下一段</a>
-        </div>
+  <!-- Section 1 -->
+  <section id="s1" class="scroll-mt-24 md:scroll-mt-28">
+    <div class="min-h-[70vh] flex items-center justify-center text-center text-white bg-gradient-to-br from-rose-500 to-orange-500">
+      <div class="max-w-3xl">
+        <h1 class="text-4xl md:text-5xl font-extrabold">區段一</h1>
+        <p class="mt-3">暖色 Banner × 淺底內容</p>
+        <a href="#s2" class="btn-primary mt-6">下一段</a>
       </div>
-      <div class="py-12 bg-rose-50">
-        <div class="container mx-auto px-4 max-w-4xl bg-white rounded-2xl shadow p-6">
-          <h2 class="text-2xl font-bold">區段一內容</h2>
-          <p class="mt-2 text-slate-600">這裡可以放簡介或特色清單。</p>
-        </div>
+    </div>
+    <div class="py-12 bg-rose-50">
+      <div class="max-w-4xl mx-auto card">
+        <h2 class="text-2xl font-bold">區段一內容</h2>
+        <p class="mt-2 text-slate-600">這裡可以放簡介或特色清單。</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Section 2 -->
-    <section id="s2" class="scroll-mt-24 md:scroll-mt-28">
-      <div class="min-h-[70vh] flex items-center justify-center text-center text-white bg-gradient-to-br from-indigo-500 to-sky-500">
-        <div class="container mx-auto px-4 max-w-3xl">
-          <h2 class="text-3xl md:text-4xl font-extrabold">區段二</h2>
-          <p class="mt-3 opacity-90">冷色對比，切換節奏</p>
-          <a href="#s3" class="btn-primary mt-6">繼續</a>
-        </div>
+  <!-- Section 2 -->
+  <section id="s2" class="scroll-mt-24 md:scroll-mt-28">
+    <div class="min-h-[70vh] flex items-center justify-center text-center text-white bg-gradient-to-br from-indigo-500 to-sky-500">
+      <div class="max-w-3xl">
+        <h2 class="text-3xl md:text-4xl font-extrabold">區段二</h2>
+        <p class="mt-3">冷色對比，切換節奏</p>
+        <a href="#s3" class="btn-primary mt-6">繼續</a>
       </div>
-      <div class="py-12 bg-indigo-50">
-        <div class="container mx-auto px-4 max-w-5xl grid gap-6 md:grid-cols-3">
-          <div class="bg-white rounded-xl shadow p-4">特色 A</div>
-          <div class="bg-white rounded-xl shadow p-4">特色 B</div>
-          <div class="bg-white rounded-xl shadow p-4">特色 C</div>
-        </div>
+    </div>
+    <div class="py-12 bg-indigo-50">
+      <div class="max-w-5xl mx-auto grid gap-6 md:grid-cols-3">
+        <div class="card">特色 A</div>
+        <div class="card">特色 B</div>
+        <div class="card">特色 C</div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Section 3 -->
-    <section id="s3" class="scroll-mt-24 md:scroll-mt-28">
-      <div class="min-h-[70vh] flex items-center justify-center text-center text-white bg-gradient-to-br from-emerald-500 to-teal-500">
-        <div class="container mx-auto px-4 max-w-3xl">
-          <h2 class="text-3xl md:text-4xl font-extrabold">區段三</h2>
-          <p class="mt-3 opacity-90">展示圖文或作品集</p>
-          <a href="#s4" class="btn-primary mt-6">下一段</a>
-        </div>
+  <!-- Section 3 -->
+  <section id="s3" class="scroll-mt-24 md:scroll-mt-28">
+    <div class="min-h-[70vh] flex items-center justify-center text-center text-white bg-gradient-to-br from-emerald-500 to-teal-500">
+      <div class="max-w-3xl">
+        <h2 class="text-3xl md:text-4xl font-extrabold">區段三</h2>
+        <p class="mt-3">展示圖文或作品集</p>
+        <a href="#s4" class="btn-primary mt-6">下一段</a>
       </div>
-      <div class="py-12 bg-emerald-50">
-        <div class="container mx-auto px-4 max-w-6xl grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <div class="bg-white rounded-xl shadow overflow-hidden">
-            <img src="https://picsum.photos/400/250?random=1" class="w-full"/>
-            <div class="p-4">圖片 A</div>
-          </div>
-          <div class="bg-white rounded-xl shadow overflow-hidden">
-            <img src="https://picsum.photos/400/250?random=2" class="w-full"/>
-            <div class="p-4">圖片 B</div>
-          </div>
-          <div class="bg-white rounded-xl shadow overflow-hidden">
-            <img src="https://picsum.photos/400/250?random=3" class="w-full"/>
-            <div class="p-4">圖片 C</div>
-          </div>
-        </div>
+    </div>
+    <div class="py-12 bg-emerald-50">
+      <div class="max-w-6xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="card">圖片 A</div>
+        <div class="card">圖片 B</div>
+        <div class="card">圖片 C</div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Section 4 -->
-    <section id="s4" class="scroll-mt-24 md:scroll-mt-28">
-      <div class="min-h-[60vh] flex items-center justify-center text-center text-white bg-gradient-to-br from-fuchsia-500 to-pink-600">
-        <div class="container mx-auto px-4 max-w-3xl">
-          <h2 class="text-3xl md:text-4xl font-extrabold">區段四</h2>
-          <p class="mt-3 opacity-90">用統計或表格呈現資料</p>
-          <a href="#s5" class="btn-primary mt-6">最後一段</a>
-        </div>
+  <!-- Section 4 -->
+  <section id="s4" class="scroll-mt-24 md:scroll-mt-28">
+    <div class="min-h-[60vh] flex items-center justify-center text-center text-white bg-gradient-to-br from-fuchsia-500 to-pink-600">
+      <div class="max-w-3xl">
+        <h2 class="text-3xl md:text-4xl font-extrabold">區段四</h2>
+        <p class="mt-3">用統計或表格呈現資料</p>
+        <a href="#s5" class="btn-primary mt-6">最後一段</a>
       </div>
-      <div class="py-12 bg-fuchsia-50">
-        <div class="container mx-auto px-4 max-w-4xl bg-white rounded-2xl shadow p-6">
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-100">
-              <tr><th class="px-3 py-2">項目</th><th class="px-3 py-2">說明</th><th class="px-3 py-2">狀態</th></tr>
-            </thead>
-            <tbody>
-              <tr class="border-t"><td class="px-3 py-2">A</td><td class="px-3 py-2">內容說明 A</td><td class="px-3 py-2">完成</td></tr>
-              <tr class="border-t"><td class="px-3 py-2">B</td><td class="px-3 py-2">內容說明 B</td><td class="px-3 py-2">進行中</td></tr>
-            </tbody>
-          </table>
-        </div>
+    </div>
+    <div class="py-12 bg-fuchsia-50">
+      <div class="max-w-4xl mx-auto card">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-100">
+            <tr><th class="px-3 py-2">項目</th><th class="px-3 py-2">說明</th><th class="px-3 py-2">狀態</th></tr>
+          </thead>
+          <tbody>
+            <tr class="border-t"><td class="px-3 py-2">A</td><td class="px-3 py-2">內容說明 A</td><td class="px-3 py-2">完成</td></tr>
+            <tr class="border-t"><td class="px-3 py-2">B</td><td class="px-3 py-2">內容說明 B</td><td class="px-3 py-2">進行中</td></tr>
+          </tbody>
+        </table>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Section 5 -->
-    <section id="s5" class="scroll-mt-24 md:scroll-mt-28">
-      <div class="min-h-[60vh] flex items-center justify-center text-center text-white bg-gradient-to-br from-amber-500 to-rose-500">
-        <div class="container mx-auto px-4 max-w-3xl">
-          <h2 class="text-3xl md:text-4xl font-extrabold">區段五</h2>
-          <p class="mt-3 opacity-90">最後一段，放 CTA 或表單</p>
+  <!-- Section 5 -->
+  <section id="s5" class="scroll-mt-24 md:scroll-mt-28">
+    <div class="min-h-[60vh] flex items-center justify-center text-center text-white bg-gradient-to-br from-amber-500 to-rose-500">
+      <div class="max-w-3xl">
+        <h2 class="text-3xl md:text-4xl font-extrabold">區段五</h2>
+        <p class="mt-3">最後一段，放 CTA 或表單</p>
+      </div>
+    </div>
+    <div class="py-12 bg-amber-50">
+      <div class="max-w-3xl mx-auto card">
+        <form onsubmit="event.preventDefault(); alert('已送出！');" class="grid gap-4">
+          <input type="text" placeholder="名稱" required class="border p-2 rounded"/>
+          <input type="email" placeholder="Email" required class="border p-2 rounded"/>
+          <textarea rows="4" placeholder="訊息" class="border p-2 rounded"></textarea>
+          <button type="submit" class="btn-primary">送出</button>
+        </form>
+        <div class="mt-6 text-center">
+          <a href="#top" class="btn-outline">回到頂部</a>
         </div>
       </div>
-      <div class="py-12 bg-amber-50">
-        <div class="container mx-auto px-4 max-w-3xl bg-white rounded-2xl shadow p-6">
-          <form onsubmit="event.preventDefault(); alert('已送出！');" class="grid gap-4">
-            <input type="text" placeholder="名稱" required class="border p-2 rounded"/>
-            <input type="email" placeholder="Email" required class="border p-2 rounded"/>
-            <textarea rows="4" placeholder="訊息" class="border p-2 rounded"></textarea>
-            <button type="submit" class="btn-primary">送出</button>
-          </form>
-          <div class="mt-6 text-center">
-            <a href="#top" class="btn-outline">回到頂部</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <script src="main.js"></script>
+  <!-- JS：平滑捲動＋修正捲動位置 -->
+  <script>
+    (function() {
+      function getNavHeight() {
+        const nav = document.getElementById('siteNav');
+        return nav ? nav.offsetHeight : 56;
+      }
+      document.addEventListener('click', function(e) {
+        const a = e.target.closest('a[href^="#"]');
+        if (!a) return;
+        const hash = a.getAttribute('href');
+        if (hash === '#') return;
+        const target = document.querySelector(hash);
+        if (!target) return;
+        e.preventDefault();
+        const navH = getNavHeight();
+        const top = target.getBoundingClientRect().top + window.scrollY - navH - 6;
+        window.scrollTo({ top, behavior: 'smooth' });
+        history.pushState(null, '', hash);
+      });
+    })();
+  </script>
 </body>
 </html>
