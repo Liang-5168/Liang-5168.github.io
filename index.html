@@ -1,34 +1,145 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jason Liang</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>山之記憶：四幕旅程</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { scroll-behavior: smooth; font-family: 'Noto Sans TC', sans-serif; background-color: #000; }
+
+    section {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .fixed-bg {
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1s ease-in-out;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.45);
+      z-index: 1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      animation: fadein 1.5s ease-in;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 { font-size: 3em; margin-bottom: 0.5em; }
+    h2 { font-size: 2em; margin-bottom: 0.3em; }
+    p { font-size: 1.2em; line-height: 1.8; }
+
+    /* 結尾頁面 */
+    .end {
+      background: #111;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .end h2 {
+      font-size: 2.5em;
+      margin-bottom: 1rem;
+    }
+
+    .end p {
+      font-size: 1.1em;
+      max-width: 700px;
+      line-height: 1.8;
+    }
+
+    footer {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      text-align: center;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+    }
+  </style>
 </head>
 <body>
-  <header class="main-header">
-    <h1>Jason Liang</h1>
-    <p>年齡不是限制美好的藉口</p>
-  </header>
 
-  <section class="about-section">
-    <h2>關於我</h2>
+  <footer>🌄 山之記憶：四幕旅程 — 滾動敘事練習</footer>
+
+  <!-- 第一幕 -->
+  <section class="fixed-bg" style="background-image: url('Generated Image October 07, 2025 - 11_15AM.jpg');">
+    <div class="overlay"></div>
+    <div class="content">
+      <h1>山之記憶：四幕旅程</h1>
+      <p>每一次登山，都是一次關於「人與自然」的對話。這是一群朋友，在高山雲海間，留下的四幕記憶。</p>
+    </div>
+  </section>
+
+  <!-- 第二幕 -->
+  <section class="fixed-bg" style="background-image: url('Generated Image October 07, 2025 - 12.jpg');">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>第一幕｜星空營火</h2>
+      <p>夜幕低垂，銀河鋪滿天際。火光映照著他們的臉龐，也照亮了心底未說的故事。那一夜，他們談夢想、談迷惘，也談回家的路。</p>
+    </div>
+  </section>
+
+  <!-- 第三幕 -->
+  <section class="fixed-bg" style="background-image: url('Generated Image October 07, 2025 - 14.jpg');">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>第二幕｜夜宿雲端</h2>
+      <p>夜色靜謐，帳篷裡的燈光微弱而溫暖。窗外的雲海如海浪翻湧，而他們在夢裡繼續著白日未完的冒險。</p>
+    </div>
+  </section>
+
+  <!-- 第四幕 -->
+  <section class="fixed-bg" style="background-image: url('Generated Image October 07, 2025 - 13.jpg');">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>第三幕｜黎明再啟</h2>
+      <p>清晨的霧海翻湧，陽光再次破曉。他們並肩而立，舉手迎接新的一天。那一刻，他們懂了——登山，不是征服，而是記得。</p>
+    </div>
+  </section>
+
+  <!-- 結尾 -->
+  <section class="end">
+    <h2>影像生成說明</h2>
     <p>
-      嗨，我是 Jason ，一個熱愛人文、企劃、採訪的人。我的專長包括專案管理以及設計思考。希望透過這個頁面讓你更認識我。
+      本作品使用 AI 圖像生成工具 <strong>ChatGPT Image Gen</strong> 製作，主題設定為「登山露營與友誼」。<br>
+      圖片分別代表：<br>
+      ① 清晨啟程 ｜ ② 星空營火 ｜ ③ 夜宿雲端 ｜ ④ 迎接黎明。<br><br>
+      生成過程中輸入提示語：「mountain camping friends around campfire, milky way night sky, dawn fog, storytelling mood」。<br>
+      以 HTML + CSS 實作 <code>fixed background</code> 與 <code>sticky-top</code> 技術，營造視覺滾動敘事效果。
     </p>
   </section>
 
-  <section class="contact-section">
-    <h2>聯絡方式</h2>
-    <ul>
-      <li>Email：<a href="mailto:41202008E@gapps.ntnu.edu.tw">41202008E@gapps.ntnu.edu.tw</a></li>
-      <li>Instagram：<a href="https://www.instagram.com/jason_liang_0321/" target="_blank">@jason_liang_0321</a></li>
-    </ul>
-  </section>
-
-  <footer class="footer">
-    <p>&copy; 2025 Jason Liang. 保留所有權利。</p>
-  </footer>
 </body>
 </html>
