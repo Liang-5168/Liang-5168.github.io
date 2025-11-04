@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>島嶼的呼吸：從黎明到夜晚的永續旅程</title>
+  <style>
+    :root{
+      --vh: 100vh;
+      --vw: 100vw;
+      --ease: cubic-bezier(.22,.61,.36,1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { overflow-x: hidden; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "Helvetica Neue", Arial; color:#fff; background:#000; }
+
+    .vh-100 { height: 100vh; }
+    .text-center { display: flex; justify-content: center; align-items: center; font-size: clamp(1.1rem, 3vw, 2.2rem); text-align: center; }
+    .bg-primary { background: #0d6efd; }
+    .bg-dark { background: #111; }
+    .bg-secondary { background: #6c757d; }
+    .bg-success { background: #198754; }
+    .bg-danger { background: #dc3545; }
+    .bg-info { background: #0dcaf0; color:#0b2630; }
+    .bg-warning { background: #ffc107; color:#111; }
+
+    /* ===== 導入區（標題＋主旨） ===== */
+    .hero {
+      height: 100vh;
+      background: radial-gradient(1200px 600px at 50% 20%, rgba(255,255,255,.15), transparent 60%), linear-gradient(#7bd3ff, #007cbe);
+      display:flex; align-items:center; justify-content:center; text-align:center; padding: 0 6vw;
+    }
+    .hero h1{ font-size: clamp(1.6rem, 5.2vw, 3rem); line-height:1.2; letter-spacing:.03em; }
+    .hero p{ margin-top: .8rem; font-size: clamp(.95rem, 2.2vw, 1.2rem); opacity:.9; }
+
+    /* ===== 第一段：Progress bar left→right ===== */
+    .progress-wrapper { height: 300vh; position: relative; }
+    .sticky-top { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+
+    #outer {
+      height: 100vh;
+      background-image: url(https://p4css.github.io/webScroll/images/Linpen2006.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative; isolation: isolate;
+    }
+    #outer::before{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(to right, rgba(0,0,0,.65), rgba(0,0,0,.25));
+      z-index:0;
+    }
+    #statusbar {
+      position: absolute; inset: 0 auto 0 0;
+      width: 0;
+      background-image: url(https://p4css.github.io/webScroll/images/Linpen2019.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      clip-path: inset(0 0 0 0);
+      transition: width .08s var(--ease);
+      z-index: 1;
+    }
+    .progress-caption{
+      position:absolute; inset:auto 5vw 7vh 5vw; z-index:2;
+      display:grid; grid-template-columns: 1fr auto; gap:1rem; align-items:end;
+    }
+    .caption-block{
+      background: rgba(0,0,0,.42);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 16px; padding: 1rem 1.1rem; backdrop-filter: blur(6px);
+      max-width: min(820px, 86vw);
+    }
+    .caption-block h2{ font-size: clamp(1.2rem, 2.8vw, 1.8rem); margin-bottom:.3rem; }
+    .caption-block p{ font-size: clamp(.9rem, 2vw, 1.05rem); line-height:1.5; opacity:.95; }
+    .pill{
+      align-self: center;
+      font-variant-numeric: tabular-nums;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.25);
+      padding:.5rem .8rem; border-radius: 999px; height:fit-content;
+    }
+
+    .spacer-grey { height: 100vh; background: linear-gradient(#2d2d2d,#555); display:flex; align-items:center; justify-content:center; text-align:center; padding:0 6vw; }
+    .spacer-grey p{ max-width: 900px; font-size: clamp(1rem, 2.2vw, 1.3rem); opacity:.95; }
+
+    /* ===== 第二段：水平捲動（左→右） ===== */
+    .banner { height: 50vh; background: #0d6efd; display:flex; align-items:center; justify-content:center; text-align:center; padding:0 6vw; }
+    .banner h3{ font-size: clamp(1.2rem, 3.6vw, 2rem); }
+    .banner p{ margin-top:.5rem; font-size: clamp(.9rem, 2vw, 1.05rem); opacity:.9; }
+
+    .scroll-container, .scroll-container-reverse { height: 900vh; position: relative; }
+
+    .horizontal-section,
+    .horizontal-section-reverse {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 500vw; /* 五個 100vw 區塊 */
+      display: flex;
+      flex-direction: row;
+      will-change: transform;
+      transition: transform .06s linear;
+    }
+
+    .horizontal-item {
+      width: 100vw;
+      height: 100vh;
+      flex-shrink: 0;
+      position: relative;
+      display:flex; align-items:center; justify-content:center;
+      text-shadow: 0 2px 12px rgba(0,0,0,.35);
+      background-size: cover; background-position:center; background-repeat:no-repeat;
+    }
+    /* 放敘事卡片與 AI 提示 */
+    .card {
+      position:absolute; left: 6vw; bottom: 8vh;
+      width: min(560px, 86vw);
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 16px; padding: 1rem 1.1rem; backdrop-filter: blur(6px);
+      text-align:left;
+    }
+    .card h4 { font-size: clamp(1.1rem, 2.4vw, 1.6rem); margin-bottom:.25rem; }
+    .card p { font-size: clamp(.9rem, 1.8vw, 1rem); opacity:.95; line-height:1.5; }
+    .prompt { margin-top:.55rem; font-size: .9em; opacity:.85; }
+    .prompt code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace; font-size:.88em; background: rgba(255,255,255,.08); padding:.12em .4em; border-radius:.35em; }
+
+    .outline { outline: 1px dashed rgba(255,255,255,.18); outline-offset: -8px; }
+
+    /* iOS fallback：避免 fixed 抖動 */
+    @supports (-webkit-touch-callout: none) {
+      #outer, #statusbar { background-attachment: scroll; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero / 導入敘事 -->
+  <header class="hero">
+    <div>
+      <h1>島嶼的呼吸：從黎明到夜晚的永續旅程</h1>
+      <p>一天是一條看不見的河：潮汐推著漁港甦醒，孩子在土壤裡學習四季，城市在屋頂找回綠意。黃昏以後，我們學著把燈關小，傾聽海浪的節拍。當夜色再度褪去，島嶼仍在呼吸，循環不息。</p>
+    </div>
+  </header>
+
+  <!-- 第一段：Progress bar 左→右，作為日間敘事的時間軸隱喻 -->
+  <section class="progress-wrapper" id="progress-wrapper">
+    <div id="outer" class="sticky-top">
+      <div id="statusbar" aria-hidden="true"></div>
+      <div class="progress-caption">
+        <div class="caption-block">
+          <h2>白日的流動</h2>
+          <p>清晨的光從港口鋪展到山谷，從教室延伸到屋頂。你的每一步，都像在替島嶼翻頁：太陽能板吸住第一道金黃，濕潤的泥土記住孩子的笑聲，城市在鋼筋與葉脈之間找到新的呼吸法。</p>
+        </div>
+        <div class="pill"><span id="progressText">0%</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 過場：轉入水平捲動 -->
+  <div class="spacer-grey">
+    <p>當影子由短變長，我們把日常放慢：看見能源如何被妥善分配、食物如何回到土地、城市如何向天空借一塊菜圃。這不是口號，是每個人都能參與的節奏。</p>
+  </div>
+
+  <!-- 第二段 A：水平捲動（左→右）「白日篇」 -->
+  <section class="banner">
+    <div>
+      <h3>白日篇：從海到城的三段課</h3>
+      <p>港口｜校園｜屋頂——沿著水平視線，讓日間的島嶼一次展開。</p>
+    </div>
+  </section>
+
+  <section class="scroll-container" id="scroll-container">
+    <div class="horizontal-section" id="horizontal-section">
+      <!-- Section 1：清晨 港口 -->
+      <div class="horizontal-item outline" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.55)), url('https://images.unsplash.com/photo-1516542076529-1ea3854896e1?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+          <h4>清晨｜太陽能碼頭</h4>
+          <p>潮水推著小港升溫，漁民在板上檢查昨天的電力收成。海面像一面巨大的鏡，反射出關於未來的簡單答案：光來了，就把它留下。</p>
+          <div class="prompt">AI 圖像提示：<code>Taiwan sunrise fishing pier, solar panels on dock, cinematic wide shot, golden light, gentle mist</code></div>
+        </div>
+      </div>
+      <!-- Section 2：午間 校園 -->
+      <div class="horizontal-item" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.6)), url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+          <h4>午間｜山村食農教室</h4>
+          <p>孩子把種子放回土裡，像把一堂自然課寫進未來的便條紙。四季在課表上排隊，午休鐘聲落下，菜圃裡的影子剛好熟成。</p>
+          <div class="prompt">AI 圖像提示：<code>mountain village school garden, children harvesting greens, soft daylight, documentary photography</code></div>
+        </div>
+      </div>
+      <!-- Section 3：午後 屋頂農園 -->
+      <div class="horizontal-item" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.6)), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+          <h4>午後｜城市屋頂的綠脈</h4>
+          <p>電梯叮的一聲，我們抵達一座小小平原。葉面接住風，箱土接住雨，一座城市學會用蔬菜的語言說話。</p>
+          <div class="prompt">AI 圖像提示：<code>taipei rooftop garden, urban farming beds, mid-afternoon light, shallow depth of field</code></div>
+        </div>
+      </div>
+      <!-- Section 4：黃昏 市集 -->
+      <div class="horizontal-item" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,.65)), url('https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+          <h4>黃昏｜地方市集</h4>
+          <p>攤車的油燈亮起，季節的味道在巷口串起。每一道料理，都是一次縮小的產地直送；每一次握手，都是一次社群的重逢。</p>
+          <div class="prompt">AI 圖像提示：<code>twilight local market, warm street stalls, human warmth, golden hour, cinematic bokeh</code></div>
+        </div>
+      </div>
+      <!-- Section 5：入夜 海岸 -->
+      <div class="horizontal-item" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,.7)), url('https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+          <h4>入夜｜海風與燈火</h4>
+          <p>最後一縷霞色收好，城市把光調暗一格。遠方的風機轉過來，像是在替島嶼輕聲打拍子。</p>
+          <div class="prompt">AI 圖像提示：<code>taiwan coastline dusk, sea breeze, distant wind turbines, long exposure, tranquil mood</code></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 過場 Footer（白日結語） -->
+  <div class="vh-100 bg-dark text-center"><div style="padding:0 6vw; max-width:1000px;">
+    白日把資源留在原處，把故事留在彼此之間。當我們學會慢一點，永續就不再是遠方的名詞。
+  </div></div>
+  <div class="vh-100 bg-warning text-center"><div style="padding:0 6vw; max-width:1000px;">
+    問題從來不只有一個答案，但每個答案都需要一個開始。從屋頂的一盆菜、從學校的一畦地。
+  </div></div>
+  <div class="vh-100 bg-info text-center"><div style="padding:0 6vw; max-width:1000px;">
+    於是，我們把日常練成習慣，讓城市與自然互相致意。
+  </div></div>
+
+  <!-- 第二段 B：反向水平捲動（右→左視覺）「夜色篇」 -->
+  <section class="scroll-container-reverse" id="scroll-container-reverse">
+    <div class="horizontal-section-reverse" id="horizontal-section-reverse">
+      <!-- R1：城市夜電 -->
+      <div class="horizontal-item" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.7)), url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+          <h4>夜色｜城市把燈關小一格</h4>
+          <p>霓虹退後一步，節能不是犧牲，而是讓夜空重新看見星子。窗戶裡的人影仍在，節奏只是剛好。</p>
+          <div class="prompt">AI 圖像提示：<code>city skyline night, energy grid, neon reflection after rain, subtle lights, drizzle</code></div>
+        </div>
+      </div>
+      <!-- R2：返鄉與文化 -->
+      <div class="horizontal-item" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.3), rgba(0,0,0,.7)), url('https://images.unsplash.com/photo-1544989164-31dc3c645987?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+          <h4>返鄉｜年輕人與老技巧</h4>
+          <p>夜裡的工房傳來木頭與布料的味道。手把技藝翻新，像替時間縫上暗扣；明天上工，會更合身。</p>
+          <div class="prompt">AI 圖像提示：<code>young people returning home workshop, local crafts, warm tungsten light, intimate interior</code></div>
+        </div>
+      </div>
+      <!-- R3：海洋的呼吸 -->
+      <div class="horizontal-item" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,.7)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+          <h4>潮｜海面微亮像在呼吸</h4>
+          <p>浪尖有藍色的光，像心跳在水裡。它提醒我們：只要還肯安靜，世界就會回應。</p>
+          <div class="prompt">AI 圖像提示：<code>bioluminescent waves, moonlight, long exposure, tranquil, minimal shoreline</code></div>
+        </div>
+      </div>
+      <!-- R4：山林回聲 -->
+      <div class="horizontal-item" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.75)), url('https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+          <h4>林｜蟲鳴與霧的合奏</h4>
+          <p>霧像一封沒署名的信，路徑在腳下慢慢顯形。山林用最輕的方式告訴我們：請小聲一點。</p>
+          <div class="prompt">AI 圖像提示：<code>forest at night, light mist, faint lanterns, stars peeking, hush ambience</code></div>
+        </div>
+      </div>
+      <!-- R5：回到起點 -->
+      <div class="horizontal-item outline" style="background-image:linear-gradient(to bottom, rgba(0,0,0,.3), rgba(0,0,0,.75)), url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop');">
+        <div class="card">
+          <h4>黎明前｜我們又要翻頁了</h4>
+          <p>當第一隻鳥醒來，島嶼深吸一口氣。我們把昨天的光用得恰好，才有今天的清晨。</p>
+          <div class="prompt">AI 圖像提示：<code>pre-dawn blue hour coastline, minimal composition, calm sea, subtle gradient</code></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 夜色結語 -->
+  <div class="vh-100 bg-dark text-center"><div style="padding:0 6vw; max-width:1000px;">
+    日復一日，我們在呼吸之間學會留白：給土地、給海洋，也給彼此。
+  </div></div>
+  <div class="vh-100 bg-warning text-center"><div style="padding:0 6vw; max-width:1000px;">
+    當你準備好，請把畫面上的提示詞交給生成器；把生成的圖，貼回你的島。
+  </div></div>
+  <div class="vh-100 bg-info text-center"><div style="padding:0 6vw; max-width:1000px;">
+    下一次再見時，讓我們用更輕的方式，走向更長的未來。
+  </div></div>
+
+  <script>
+    // rAF 節流
+    (function(){
+      const state = { ticking: false };
+      const onScroll = (fn) => {
+        window.addEventListener('scroll', () => {
+          if (!state.ticking) {
+            state.ticking = true;
+            requestAnimationFrame(() => { fn(); state.ticking = false; });
+          }
+        }, { passive: true });
+      };
+      const onResize = (fn) => window.addEventListener('resize', fn);
+
+      // 第一段：進度條
+      const wrapper = document.getElementById('progress-wrapper');
+      const statusbar = document.getElementById('statusbar');
+      const progressText = document.getElementById('progressText');
+
+      let pTop = 0, pHeight = 0, viewH = window.innerHeight;
+
+      function measureProgress(){
+        const rect = wrapper.getBoundingClientRect();
+        pTop = window.scrollY + rect.top;
+        pHeight = wrapper.offsetHeight - viewH;
+        viewH = window.innerHeight;
+        applyProgress();
+      }
+      function applyProgress(){
+        const y = window.scrollY;
+        let percent = 0;
+        if (y > pTop && y < pTop + pHeight) percent = (y - pTop) / pHeight;
+        else if (y >= pTop + pHeight) percent = 1;
+        const clamped = Math.max(0, Math.min(1, percent));
+        statusbar.style.width = (clamped * window.innerWidth) + 'px';
+        progressText.textContent = Math.round(clamped * 100) + '%';
+      }
+
+      // 第二段：水平（左→右）
+      const container = document.getElementById('scroll-container');
+      const horizontal = document.getElementById('horizontal-section');
+      let cTop = 0, cTravel = 0, hMax = 0;
+
+      function measureHorizontal(){
+        const r = container.getBoundingClientRect();
+        cTop = window.scrollY + r.top;
+        cTravel = container.offsetHeight - window.innerHeight;
+        hMax = horizontal.scrollWidth - window.innerWidth;
+        applyHorizontal();
+      }
+      function applyHorizontal(){
+        const y = window.scrollY;
+        let t = 0;
+        if (y > cTop && y < cTop + cTravel) t = (y - cTop) / cTravel;
+        else if (y >= cTop + cTravel) t = 1;
+        const x = -hMax * Math.max(0, Math.min(1, t));
+        horizontal.style.transform = `translateX(${x}px)`;
+      }
+
+      // 第三段：反向水平（-rMax → 0）
+      const containerR = document.getElementById('scroll-container-reverse');
+      const horizontalR = document.getElementById('horizontal-section-reverse');
+      let rTop = 0, rTravel = 0, rMax = 0;
+
+      function measureReverse(){
+        const r = containerR.getBoundingClientRect();
+        rTop = window.scrollY + r.top;
+        rTravel = containerR.offsetHeight - window.innerHeight;
+        rMax = horizontalR.scrollWidth - window.innerWidth;
+        applyReverse();
+      }
+      function applyReverse(){
+        const y = window.scrollY;
+        let t = 0;
+        if (y > rTop && y < rTop + rTravel) t = (y - rTop) / rTravel;
+        else if (y >= rTop + rTravel) t = 1;
+        const x = -rMax + rMax * Math.max(0, Math.min(1, t));
+        horizontalR.style.transform = `translateX(${x}px)`;
+      }
+
+      const onTick = () => { applyProgress(); applyHorizontal(); applyReverse(); };
+      const onMeasure = () => { measureProgress(); measureHorizontal(); measureReverse(); };
+
+      onResize(onMeasure);
+      onScroll(onTick);
+      onMeasure();
+      onTick();
+
+      // iOS 高度變動微調
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(onMeasure, 120);
+      });
+    })();
+  </script>
+</body>
+</html>
