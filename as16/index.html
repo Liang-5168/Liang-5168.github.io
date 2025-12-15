@@ -12,7 +12,7 @@
 
   <style>
     /* =================================
-      樣式區塊：已整合 CSS，恢復紅色、字體及佈局
+      CSS 樣式區塊：已包含所有設計風格 (紅色、金色、字體、佈局)
     ================================= */
     :root{
       --red:#970C10;
@@ -916,8 +916,7 @@
           </div>
 
           <div class="sticky-step reveal js-sticky-step-2"
-            data-media="assets/img/redpacket.jpg"
-            data-kind="img">
+            data-media="assets/img/redpacket.jpg"             data-kind="img">
             <span class="label">POINT 02</span>
             <div class="text">紅包不是對身體的購買，而是對「表演」的支持；觀眾來聽歌、點歌、聊天，建立的是長時間的人情關係。</div>
           </div>
@@ -935,8 +934,7 @@
             <div class="text">多出來的金額成為鼓勵，也讓「紅包」成為關係的可見形式：不是一次性的刺激消費，而是累積的信任與照顧。</div>
           </div>
         </div>
-      </div>
-    </section>
+            </section>
 
         <section class="chapter" id="chapter-order" aria-label="章節三：仍在運作的秩序">
       <div class="chapter-inner">
@@ -1392,7 +1390,7 @@
         const obs5 = new IntersectionObserver((entries) => {
           const candidates = entries.filter(e => e.isIntersecting);
           if (!candidates.length) return;
-          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio);
           const top = candidates[0].target;
 
           setActiveLine(top);
@@ -1420,7 +1418,7 @@
       }
 
       /* =========================
-        Modal (來自第一組的邏輯，更完整)
+        Modal
       ========================== */
       const backdrop = $("#modal-backdrop");
       const btnClose = $("#modal-close");
