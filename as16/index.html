@@ -62,7 +62,7 @@
     .skip-link:focus{left:10px;}
 
     /* =========================
-      Atmosphere: fog / smoke (確保霧氣動畫和疊層運作)
+      Atmosphere: fog / smoke
     ========================== */
     .fog-layer{
       position:fixed;
@@ -138,7 +138,7 @@
     }
 
     /* =========================
-      Section 2｜Buffer Zone (紅色緩衝區)
+      Section 2｜Buffer Zone
     ========================== */
     .buffer{
       position:relative;
@@ -156,7 +156,7 @@
     }
 
     /* =========================
-      Section 3｜Hero (紅色背景與金色字體)
+      Section 3｜Hero
     ========================== */
     .hero{
       position:relative;
@@ -380,7 +380,7 @@
     .reveal.is-visible{opacity:1;transform:translateY(0);}
 
     /* =========================
-      Sticky Compare / Sticky Narrative (紅色背景，金點綴)
+      Sticky Compare / Sticky Narrative
     ========================== */
     .sticky-section{
       background:var(--red);
@@ -578,7 +578,6 @@
       height:min(60vh,620px);
       object-fit:cover;
       display:block;
-      background:#000;
     }
     .panel .panel-media::after{
       content:"";
@@ -757,7 +756,7 @@
     }
 
     /* =========================
-      Reduced Motion (保留無障礙選項)
+      Reduced Motion
     ========================== */
     @media (prefers-reduced-motion: reduce){
       html{scroll-behavior:auto !important;}
@@ -771,7 +770,7 @@
     }
 
     /* =========================
-      Mobile (響應式設計)
+      Mobile
     ========================== */
     @media (max-width: 900px){
       :root{ --navH: 86px; }
@@ -869,7 +868,7 @@
           </div>
 
           <div class="sticky-step reveal js-sticky-step"
-            data-media="assets/img/singer.jpg"> 
+            data-media="assets/img/singer.jpg">
             <span class="label">COMPARE 02</span>
             <div class="text">它也不等同 <span class="tip" data-tip="紅包場是老少宜的場所">舞廳</span>。紅包場裡，主角始終在台上，秩序與默契反而更像一套「固定座位的劇場」。</div>
           </div>
@@ -1089,14 +1088,14 @@
 
         <div class="sv-wrap">
           <div class="sv-video reveal">
-                        <video id="sv-video" controls preload="metadata" playsinline poster="assets/photo/DSC09448.jpg">
+            <video id="sv-video" controls preload="metadata" playsinline poster="assets/photo/DSC09448.jpg">
               <source id="sv-source" src="assets/video/c0662.mp4" type="video/mp4" />
               你的瀏覽器不支援影片播放。
             </video>
         </div>
 
           <div class="sv-lines">
-                        <div class="sv-line reveal js-sv-line is-active" data-src="assets/video/c0662.mp4" data-poster="assets/img/yang-yaqiao.jpg" data-time="0">
+            <div class="sv-line reveal js-sv-line is-active" data-src="assets/video/c0662.mp4" data-poster="assets/img/yang-yaqiao.jpg" data-time="0">
               <div class="quoteText">「臺上臺下，我是不一樣的人。」</div>
               <div class="who">— 楊雅喬</div>
             </div>
@@ -1266,7 +1265,7 @@
         const obs = new IntersectionObserver((entries) => {
           const candidates = entries.filter(e => e.isIntersecting);
           if (!candidates.length) return;
-          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio);
+          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
           const top = candidates[0].target;
 
           setActiveStep(compareSteps, top);
@@ -1294,7 +1293,7 @@
         const obs2 = new IntersectionObserver((entries) => {
           const candidates = entries.filter(e => e.isIntersecting);
           if (!candidates.length) return;
-          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio);
+          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
           const top = candidates[0].target;
 
           setActiveStep(steps2, top);
