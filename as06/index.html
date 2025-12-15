@@ -1,690 +1,1506 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>人工智慧發展大事記：互動時間軸</title>
-  <style>
-    :root { 
-      --maxw: 1000px; 
-      --dur: 600ms; 
-      --e: cubic-bezier(.2,.7,.2,1);
-      --peak: #10b981;
-      --valley: #ef4444;
-      --neutral: #64748b;
-    }
-    
-    * { box-sizing: border-box; }
-    
-    html, body { 
-      margin: 0; 
-      padding: 0; 
-      font-family: system-ui, -apple-system, "Noto Sans TC", Segoe UI, Roboto, Arial, sans-serif; 
-      color: #1e293b; 
-      background: linear-gradient(to bottom, #0f172a 0%, #1e293b 100%);
-      overflow-x: hidden;
-    }
-    
-    header { 
-      max-width: var(--maxw); 
-      margin: 0 auto; 
-      padding: 10vh 24px 8vh; 
-      text-align: center; 
-    }
-    
-    header h1 { 
-      font-size: clamp(32px, 5vw, 56px); 
-      margin: 0 0 16px; 
-      background: linear-gradient(135deg, #60a5fa, #a78bfa, #ec4899);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-    
-    header p { 
-      color: #94a3b8; 
-      font-size: clamp(16px, 2vw, 20px);
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#970C10" />
+  <title>唱給不在場的人</title>
 
-    .intro-section {
-      max-width: var(--maxw);
-      margin: 0 auto 12vh;
-      padding: 0 24px;
-      color: #cbd5e1;
-      line-height: 1.8;
-    }
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&display=swap" rel="stylesheet" />
 
-    .intro-section p {
-      margin-bottom: 1.5em;
-    }
+  <style>
+    :root{
+      --red:#970C10;
+      --gold:#FFE87A;
+      --ink:#000;
+      --card:rgba(255,255,255,0.06);
+      --card-border:rgba(255,255,255,0.14);
+      --text:rgba(255,255,255,0.92);
+      --muted:rgba(255,255,255,0.70);
+      --focus:rgba(255,232,122,0.95);
+      --navH: 92px;
+    }
 
-    .spacer { height: 12vh; }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{
+      scroll-behavior:smooth;
+      text-rendering:optimizeLegibility;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    body{
+      font-family:"Noto Serif TC", serif;
+      background:#000;
+      color:#fff;
+      overflow-x:hidden;
+    }
+    a{color:inherit;}
+    a:focus-visible, button:focus-visible{
+      outline:2px solid var(--focus);
+      outline-offset:3px;
+      border-radius:10px;
+    }
 
-    /* 1) 翻卡效果 - 研究里程碑卡片 -------------------------------- */
-    .timeline-event {
-      max-width: var(--maxw);
-      margin: 0 auto 16vh;
-      padding: 0 24px;
-    }
-    
-    .flip-card {
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      perspective: 1500px;
-    }
-    
-    .card-inner {
-      position: relative;
-      width: 100%;
-      min-height: 400px;
-      border-radius: 20px;
-      transform-style: preserve-3d;
-      transition: transform var(--dur) var(--e);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-    }
-    
-    .card-face {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      border-radius: 20px;
-      overflow: hidden;
-    }
-    
-    .card-front {
-      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-    }
-    
-    .card-front img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 12px;
-    }
-    
-    .card-front-placeholder {
-      width: 100%;
-      height: 100%;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #4f46e5, #7c3aed);
-      border-radius: 12px;
-    }
-    
-    .card-front-placeholder h3 {
-      font-size: clamp(24px, 3vw, 36px);
-      color: white;
-      margin: 0;
-      text-align: center;
-      padding: 20px;
-    }
-    
-    .card-back {
-      background: #ffffff;
-      transform: rotateY(180deg);
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    
-    .flip-card.flipped .card-inner {
-      transform: rotateY(180deg);
-    }
-    
-    .event-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 20px;
-      margin-bottom: 16px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    
-    .tag-peak { background: #d1fae5; color: #065f46; }
-    .tag-valley { background: #fee2e2; color: #991b1b; }
-    .tag-progress { background: #dbeafe; color: #1e40af; }
-    
-    .event-year {
-      font-size: 48px;
-      font-weight: 800;
-      color: #0f172a;
-      margin: 0 0 12px;
-      line-height: 1;
-    }
-    
-    .event-title {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1e293b;
-      margin: 0 0 20px;
-      line-height: 1.3;
-    }
-    
-    .event-description {
-      color: #475569;
-      line-height: 1.7;
-      font-size: 16px;
-    }
-    
-    .event-impact {
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 2px solid #e2e8f0;
-    }
-    
-    .event-impact strong {
-      color: #0f172a;
-      display: block;
-      margin-bottom: 8px;
-    }
+    /* Skip link (可訪問性) */
+    .skip-link{
+      position:absolute;
+      left:-999px;
+      top:10px;
+      z-index:9999;
+      background:rgba(0,0,0,0.85);
+      border:1px solid rgba(255,255,255,0.20);
+      color:#fff;
+      padding:10px 12px;
+      border-radius:12px;
+      letter-spacing:0.08em;
+    }
+    .skip-link:focus{left:10px;}
 
-    /* 2) Focus Mode - 章節聚焦效果 -------------------------------- */
-    .research-phase {
-      max-width: var(--maxw);
-      margin: 18vh auto;
-      padding: clamp(24px, 4vw, 48px);
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 24px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-      transition: filter var(--dur) var(--e), 
-                  opacity var(--dur) var(--e),
-                  transform var(--dur) var(--e);
-      position: relative;
-    }
-    
-    .research-phase::before {
-      content: '';
-      position: absolute;
-      left: -4px;
-      top: 20%;
-      bottom: 20%;
-      width: 4px;
-      background: linear-gradient(to bottom, var(--peak), var(--valley));
-      border-radius: 2px;
-      opacity: 0;
-      transition: opacity var(--dur) var(--e);
-    }
-    
-    body.focus-mode .research-phase {
-      filter: grayscale(0.7) saturate(0.5) brightness(0.85);
-      opacity: 0.5;
-      transform: scale(0.98);
-    }
-    
-    body.focus-mode .research-phase.is-focal {
-      filter: none;
-      opacity: 1;
-      transform: scale(1);
-      box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
-    }
-    
-    body.focus-mode .research-phase.is-focal::before {
-      opacity: 1;
-    }
-    
-    .phase-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    
-    .phase-period {
-      font-size: 14px;
-      font-weight: 600;
-      color: #64748b;
-      background: #f1f5f9;
-      padding: 6px 12px;
-      border-radius: 6px;
-    }
-    
-    .phase-title {
-      font-size: clamp(24px, 3.5vw, 36px);
-      font-weight: 700;
-      color: #0f172a;
-      margin: 0 0 20px;
-      line-height: 1.3;
-    }
-    
-    .phase-content {
-      color: #334155;
-      line-height: 1.8;
-      font-size: 17px;
-    }
-    
-    .phase-content p {
-      margin-bottom: 1.2em;
-    }
-    
-    .key-researchers {
-      margin-top: 24px;
-      padding: 20px;
-      background: #f8fafc;
-      border-radius: 12px;
-      border-left: 4px solid #6366f1;
-    }
-    
-    .key-researchers strong {
-      display: block;
-      color: #1e293b;
-      margin-bottom: 8px;
-      font-size: 15px;
-    }
+    /* =========================
+      Atmosphere: fog / smoke
+    ========================== */
+    .fog-layer{
+      position:fixed;
+      inset:-30vh -20vw -30vh -20vw;
+      pointer-events:none;
+      z-index:20;
+      opacity:0.22;
+      mix-blend-mode:screen;
+      filter: blur(8px) contrast(110%);
+      background:
+        radial-gradient(closest-side at 20% 30%, rgba(255,255,255,0.16), rgba(255,255,255,0) 70%),
+        radial-gradient(closest-side at 70% 55%, rgba(255,232,122,0.12), rgba(255,255,255,0) 72%),
+        radial-gradient(closest-side at 35% 80%, rgba(255,255,255,0.14), rgba(255,255,255,0) 72%);
+      animation:fog-drift 18s ease-in-out infinite;
+    }
+    .fog-layer::before,
+    .fog-layer::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(closest-side at 55% 25%, rgba(255,255,255,0.10), rgba(255,255,255,0) 70%),
+        radial-gradient(closest-side at 85% 75%, rgba(255,255,255,0.10), rgba(255,255,255,0) 70%),
+        radial-gradient(closest-side at 10% 65%, rgba(255,255,255,0.08), rgba(255,255,255,0) 70%);
+      animation:fog-drift-2 24s ease-in-out infinite;
+      opacity:0.85;
+      transform:translate3d(0,0,0);
+    }
+    .fog-layer::after{
+      animation:fog-drift-3 30s ease-in-out infinite;
+      opacity:0.55;
+      filter: blur(12px);
+    }
+    @keyframes fog-drift{
+      0%{transform:translate3d(-2vw, -1vh, 0) scale(1.02);}
+      50%{transform:translate3d(2vw, 1.2vh, 0) scale(1.05);}
+      100%{transform:translate3d(-2vw, -1vh, 0) scale(1.02);}
+    }
+    @keyframes fog-drift-2{
+      0%{transform:translate3d(2vw, 0, 0) rotate(0.001deg);}
+      50%{transform:translate3d(-2vw, 1vh, 0) rotate(0.001deg);}
+      100%{transform:translate3d(2vw, 0, 0) rotate(0.001deg);}
+    }
+    @keyframes fog-drift-3{
+      0%{transform:translate3d(0, 1vh, 0) scale(1.06);}
+      50%{transform:translate3d(1.5vw, -1vh, 0) scale(1.02);}
+      100%{transform:translate3d(0, 1vh, 0) scale(1.06);}
+    }
 
-    /* 3) 動態底線效果 - 關鍵詞強調 -------------------------------- */
-    .highlight {
-      position: relative;
-      font-weight: 600;
-      color: #4f46e5;
-      background-image: linear-gradient(120deg, #a78bfa 0%, #6366f1 100%);
-      background-repeat: no-repeat;
-      background-position: 0 100%;
-      background-size: 0% 3px;
-      transition: background-size 500ms var(--e);
-      padding-bottom: 2px;
-    }
-    
-    .highlight.active {
-      background-size: 100% 3px;
-    }
-    
-    /* 額外：波動效果給特定高亮詞 */
-    .highlight.wave {
-      background-image: linear-gradient(120deg, #10b981 0%, #059669 100%);
-    }
-    
-    .highlight.crisis {
-      background-image: linear-gradient(120deg, #f43f5e 0%, #dc2626 100%);
-      color: #dc2626;
-    }
+    /* =========================
+      Section 1｜Full-screen Video
+    ========================== */
+    .landing-video{
+      position:relative;
+      width:100%;
+      height:100vh;
+      overflow:hidden;
+      background:#000;
+    }
+    .landing-video video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .landing-video::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.28);
+      z-index:1;
+    }
 
-    footer {
-      max-width: var(--maxw);
-      margin: 0 auto;
-      padding: 8vh 24px;
-      text-align: center;
-      color: #94a3b8;
-      font-size: 14px;
-    }
-    
-    .scroll-hint {
-      position: fixed;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #94a3b8;
-      font-size: 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      opacity: 0.8;
-      animation: bounce 2s infinite;
-      pointer-events: none;
-    }
-    
-    @keyframes bounce {
-      0%, 100% { transform: translate(-50%, 0); }
-      50% { transform: translate(-50%, -10px); }
-    }
-    
-    .scroll-hint svg {
-      width: 24px;
-      height: 24px;
-    }
+    /* =========================
+      Section 2｜Buffer Zone
+    ========================== */
+    .buffer{
+      position:relative;
+      height:60vh;
+      background:var(--red);
+      overflow:hidden;
+    }
+    .buffer::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:url("assets/grain.png") repeat;
+      opacity:0.25;
+      pointer-events:none;
+    }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+    /* =========================
+      Section 3｜Hero
+    ========================== */
+    .hero{
+      position:relative;
+      height:100vh;
+      min-height:100vh;
+      background:var(--red);
+      overflow:visible;
+      display:flex;
+      align-items:center;
+      padding:0 7vw;
+      gap:min(6vw,64px);
+      isolation:isolate;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:url("assets/grain.png") repeat;
+      opacity:0.3;
+      z-index:1;
+    }
+    .hero-image{
+      position:absolute;
+      right:0;
+      bottom:0;
+      display:flex;
+      justify-content:flex-end;
+      align-items:flex-end;
+      z-index:2;
+      pointer-events:none;
+      filter:saturate(1.02) contrast(1.02);
+    }
+    .hero-image img{
+      width:clamp(420px,60vw,920px);
+      max-height:92vh;
+      height:auto;
+      object-fit:cover;
+      border-top-left-radius:28px;
+      box-shadow:0 30px 90px rgba(0,0,0,0.55);
+    }
+    .hero-content{
+      position:relative;
+      z-index:3;
+      flex:0 1 48%;
+      max-width:640px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      min-height:100%;
+    }
+    .hero h1{
+      font-size:clamp(2.5rem,5vw,4rem);
+      font-weight:900;
+      color:var(--gold);
+      margin-bottom:1rem;
+      letter-spacing:0.05em;
+    }
+    .hero h2{
+      font-size:clamp(1.4rem,3vw,2.2rem);
+      font-weight:700;
+      color:var(--gold);
+      margin-bottom:1.5rem;
+    }
+    .hero h3{
+      font-size:clamp(1rem,2.2vw,1.3rem);
+      font-weight:600;
+      color:#fff;
+      letter-spacing:0.08em;
+      margin-bottom:2rem;
+    }
+    .hero h1, .hero h2{white-space:nowrap;}
+
+    .typewriter-line{
+      display:inline-block;
+      position:relative;
+      min-height:1em;
+      overflow:hidden;
+    }
+    .typewriter-line.typing::after{
+      content:"";
+      position:absolute;
+      right:-0.1em;
+      top:50%;
+      transform:translateY(-50%);
+      height:1.2em;
+      width:2px;
+      background:var(--gold);
+      animation:caret-blink 0.8s steps(1) infinite;
+    }
+    .typewriter-line.done::after{animation:none;opacity:0;}
+
+    .hero-entrance{
+      opacity:0;
+      transform:translateY(20px);
+      transition:opacity 0.9s ease-out, transform 0.9s ease-out;
+      transition-delay:var(--delay,0ms);
+    }
+    .hero-entrance.is-visible{opacity:1;transform:translateY(0);}
+
+    .scroll-hint{
+      position:absolute;
+      bottom:3rem;
+      left:50%;
+      transform:translate(-50%,0.5rem);
+      font-size:0.9rem;
+      letter-spacing:0.3em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.85);
+      opacity:0;
+      transition:opacity 0.6s ease, transform 0.6s ease;
+      pointer-events:none;
+      z-index:4;
+    }
+    .scroll-hint.visible{
+      opacity:1;
+      transform:translate(-50%,0);
+      animation:hint-float 2s ease-in-out infinite;
+    }
+
+    @keyframes caret-blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+    @keyframes hint-float{0%{transform:translate(-50%,0);}50%{transform:translate(-50%,-8px);}100%{transform:translate(-50%,0);}}
+
+    /* =========================
+      Sticky Mini Nav + Progress
+    ========================== */
+    .mini-nav{
+      position:sticky;
+      top:0;
+      z-index:60;
+      backdrop-filter:blur(10px);
+      background:rgba(0,0,0,0.55);
+      border-bottom:1px solid rgba(255,255,255,0.10);
+    }
+    .mini-nav-inner{
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      padding:0.75rem 6vw 0.65rem;
+      overflow-x:auto;
+      scrollbar-width:none;
+    }
+    .mini-nav-inner::-webkit-scrollbar{display:none;}
+    .mini-nav a{
+      color:rgba(255,255,255,0.78);
+      text-decoration:none;
+      font-size:0.9rem;
+      letter-spacing:0.12em;
+      white-space:nowrap;
+      padding:0.35rem 0.65rem;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      transition:0.25s ease;
+    }
+    .mini-nav a:hover{color:#fff;border-color:rgba(255,255,255,0.24);}
+    .mini-nav a.active{color:#000;background:var(--gold);border-color:transparent;}
+
+    .progressbar{
+      height:3px;
+      background:rgba(255,255,255,0.10);
+      margin:0 6vw 0.65rem;
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .progressbar > div{
+      height:100%;
+      width:0%;
+      background:var(--gold);
+      border-radius:999px;
+      transition:width 0.1s linear;
+    }
+
+    /* =========================
+      Chapters Base
+    ========================== */
+    main{display:block;}
+    .chapter{
+      background:#000;
+      padding:14vh 8vw;
+      position:relative;
+      isolation:isolate;
+    }
+    .chapter-inner{max-width:980px;margin:0 auto;}
+    .kicker{
+      color:rgba(255,255,255,0.7);
+      letter-spacing:0.18em;
+      font-size:0.9rem;
+      margin-bottom:1.2rem;
+      text-transform:uppercase;
+    }
+    .chapter h2{
+      font-size:clamp(1.8rem,3.5vw,2.8rem);
+      font-weight:900;
+      letter-spacing:0.06em;
+      margin-bottom:1.1rem;
+      color:var(--gold);
+    }
+    .chapter p{
+      font-size:clamp(1.05rem,1.6vw,1.2rem);
+      line-height:1.95;
+      color:var(--text);
+      margin:0.9rem 0;
+    }
+    .chapter strong{color:rgba(255,255,255,0.98);}
+    .note{
+      color:rgba(255,255,255,0.72);
+      font-size:0.98rem;
+      line-height:1.85;
+    }
+    .hr{
+      height:1px;
+      background:rgba(255,255,255,0.12);
+      margin:2.2rem 0;
+    }
+
+    /* reveal */
+    .reveal{
+      opacity:0;
+      transform:translateY(14px);
+      transition:opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+    /* =========================
+      Sticky Compare / Sticky Narrative (Web114 style)
+    ========================== */
+    .sticky-section{
+      background:var(--red);
+      padding:0;
+      overflow:hidden;
+    }
+    .sticky-section::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:url("assets/grain.png") repeat;
+      opacity:0.28;
+      pointer-events:none;
+      z-index:0;
+    }
+    .sticky-wrap{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap:min(5vw,60px);
+      padding:12vh 8vw;
+      align-items:start;
+    }
+    .sticky-media{
+      position:sticky;
+      top:calc(var(--navH) + 8px);
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(0,0,0,0.25);
+      box-shadow:0 30px 80px rgba(0,0,0,0.45);
+      isolation:isolate;
+    }
+    .sticky-media img, .sticky-media video{
+      width:100%;
+      height:min(72vh,720px);
+      object-fit:cover;
+      display:block;
+    }
+    .sticky-media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,0.14), rgba(0,0,0,0.38));
+      pointer-events:none;
+      z-index:2;
+    }
+
+    .sticky-text{
+      padding-bottom:20vh;
+    }
+    .sticky-text .lead{
+      color:rgba(255,255,255,0.88);
+      font-size:clamp(1.1rem,1.8vw,1.25rem);
+      line-height:1.95;
+      margin:0.8rem 0 1.2rem;
+    }
+    .sticky-step{
+      margin:0;
+      padding:1.1rem 1.1rem;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(0,0,0,0.18);
+      transition:background 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+      transform:translateY(0);
+    }
+    .sticky-step + .sticky-step{margin-top:1rem;}
+    .sticky-step .label{
+      display:block;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      font-size:0.82rem;
+      color:rgba(255,255,255,0.70);
+      margin-bottom:0.35rem;
+    }
+    .sticky-step.is-active{
+      background:rgba(0,0,0,0.34);
+      border-color:rgba(255,255,255,0.20);
+      transform:translateY(-2px);
+    }
+    .sticky-step.is-active .label{color:rgba(255,232,122,0.85);}
+    .sticky-step.is-active .text{color:rgba(255,255,255,0.98);}
+    .sticky-step .text{
+      color:rgba(255,255,255,0.86);
+      font-size:clamp(1.05rem,1.7vw,1.2rem);
+      line-height:1.95;
+    }
+
+    /* Tooltip */
+    .tip{
+      position:relative;
+      border-bottom:1px dashed rgba(255,255,255,0.55);
+      cursor:help;
+    }
+    .tip:hover::after{
+      content:attr(data-tip);
+      position:absolute;
+      left:0;
+      top:1.7em;
+      width:min(320px,70vw);
+      padding:10px 12px;
+      background:rgba(0,0,0,.90);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:14px;
+      font-size:0.95rem;
+      line-height:1.5;
+      z-index:20;
+    }
+
+    /* =========================
+      Chapter 03: order stage (scroll-lit)
+    ========================== */
+    .order-stage{
+      border-radius:24px;
+      padding:1.4rem 1.4rem 1.2rem;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(0,0,0,0.22);
+      transition:background 0.8s ease, border-color 0.8s ease, filter 0.8s ease;
+      filter:brightness(0.6) saturate(0.95);
+    }
+    .order-stage.is-lit{
+      background:rgba(0,0,0,0.34);
+      border-color:rgba(255,255,255,0.22);
+      filter:brightness(1) saturate(1);
+    }
+    .order-stage p{margin:0.75rem 0;}
+
+    /* =========================
+      Horizontal Exhibit (Chapter 04)
+    ========================== */
+    .hscroll{
+      padding:0;
+      background:var(--red);
+      position:relative;
+      overflow:hidden;
+    }
+    .hscroll::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:url("assets/grain.png") repeat;
+      opacity:0.28;
+      pointer-events:none;
+      z-index:0;
+    }
+    .hscroll-head{
+      position:relative;
+      z-index:2;
+      padding:12vh 8vw 4vh;
+      max-width:980px;
+      margin:0 auto;
+    }
+    .hscroll-head .note{color:rgba(255,255,255,0.74);}
+    .hscroll-pin{
+      position:sticky;
+      top:var(--navH);
+      height:calc(100vh - var(--navH));
+      overflow:hidden;
+      z-index:2;
+      border-top:1px solid rgba(255,255,255,0.10);
+      border-bottom:1px solid rgba(255,255,255,0.10);
+      background:rgba(0,0,0,0.12);
+    }
+    .hscroll-track{
+      height:100%;
+      display:flex;
+      width:600vw; /* 6 panels */
+      transform:translateX(0px);
+      will-change:transform;
+      transition:transform 0.06s linear;
+    }
+    .panel{
+      width:100vw;
+      height:100%;
+      padding:8vh 8vw;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:min(5vw,60px);
+      align-items:center;
+    }
+    .panel .panel-media{
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(0,0,0,0.25);
+      box-shadow:0 30px 80px rgba(0,0,0,0.45);
+      position:relative;
+      isolation:isolate;
+    }
+    .panel .panel-media img,
+    .panel .panel-media video{
+      width:100%;
+      height:min(60vh,620px);
+      object-fit:cover;
+      display:block;
+      background:#000;
+    }
+    .panel .panel-media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,0.12), rgba(0,0,0,0.35));
+      pointer-events:none;
+      z-index:2;
+    }
+    .panel h3{
+      font-size:clamp(1.8rem,3vw,2.4rem);
+      font-weight:900;
+      letter-spacing:0.12em;
+      color:var(--gold);
+      margin-bottom:0.55rem;
+    }
+    .panel .tagline{
+      font-size:0.92rem;
+      letter-spacing:0.22em;
+      color:rgba(255,255,255,0.66);
+      margin-bottom:1.0rem;
+      text-transform:uppercase;
+    }
+    .panel .desc{
+      color:rgba(255,255,255,0.90);
+      font-size:clamp(1.05rem,1.6vw,1.2rem);
+      line-height:1.95;
+      margin:0.6rem 0 1.1rem;
+    }
+    .panel .cta{
+      display:inline-flex;
+      align-items:center;
+      gap:0.55rem;
+      font-size:0.95rem;
+      letter-spacing:0.12em;
+      color:rgba(255,255,255,0.88);
+      user-select:none;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,0.20);
+      background:rgba(0,0,0,0.16);
+      padding:0.55rem 0.85rem;
+      border-radius:999px;
+      transition:0.25s ease;
+    }
+    .panel .cta:hover{
+      border-color:rgba(255,255,255,0.32);
+      background:rgba(0,0,0,0.26);
+    }
+    .hscroll-spacer{
+      height:520vh;
+      background:var(--red);
+      position:relative;
+      z-index:1;
+    }
+
+    /* =========================
+      Scrolled Video (Chapter 05)
+    ========================== */
+    .sv-wrap{
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap:min(5vw,60px);
+      align-items:start;
+      margin-top:2.0rem;
+    }
+    .sv-video{
+      position:sticky;
+      top:calc(var(--navH) + 8px);
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.03);
+      box-shadow:0 30px 80px rgba(0,0,0,0.45);
+    }
+    .sv-video video{
+      width:100%;
+      height:min(72vh,720px);
+      object-fit:cover;
+      display:block;
+      background:#000;
+    }
+    .sv-lines{
+      padding-bottom:30vh;
+    }
+    .sv-line{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.04);
+      padding:1.1rem 1.1rem;
+      margin:0 0 1rem;
+      transition:background 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+    }
+    .sv-line .who{
+      margin-top:0.55rem;
+      color:rgba(255,255,255,0.65);
+      font-size:0.95rem;
+      letter-spacing:0.08em;
+    }
+    .sv-line.is-active{
+      background:rgba(255,255,255,0.08);
+      border-color:rgba(255,255,255,0.18);
+      transform:translateY(-2px);
+    }
+    .sv-line.is-active .quoteText{
+      color:rgba(255,255,255,0.98);
+    }
+    .sv-line .quoteText{
+      color:rgba(255,255,255,0.84);
+      font-size:clamp(1.05rem,1.6vw,1.2rem);
+      line-height:1.95;
+    }
+
+    /* =========================
+      Modal
+    ========================== */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.72);
+      z-index:120;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:6vh 6vw;
+    }
+    .modal-backdrop.open{display:flex;}
+    .modal{
+      width:min(980px,100%);
+      max-height:86vh;
+      overflow:auto;
+      background:rgba(10,10,10,0.96);
+      border:1px solid rgba(255,255,255,0.16);
+      border-radius:24px;
+      padding:1.4rem 1.4rem 1.2rem;
+      box-shadow:0 30px 80px rgba(0,0,0,0.6);
+    }
+    .modal-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:1rem;
+      margin-bottom:0.8rem;
+    }
+    .modal-title{
+      font-size:1.6rem;
+      font-weight:900;
+      letter-spacing:0.10em;
+      color:var(--gold);
+    }
+    .modal-close{
+      appearance:none;
+      border:1px solid rgba(255,255,255,0.20);
+      background:rgba(255,255,255,0.06);
+      color:rgba(255,255,255,0.92);
+      border-radius:999px;
+      padding:0.55rem 0.85rem;
+      cursor:pointer;
+      font-size:0.95rem;
+      letter-spacing:0.12em;
+    }
+    .modal-close:hover{border-color:rgba(255,255,255,0.28);}
+    .modal-body p{margin:0.8rem 0;}
+    .modal-media{margin-top:1rem;}
+    .modal-media video, .modal-media img{
+      width:100%;
+      border-radius:18px;
+      display:block;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.03);
+    }
+    .modal-caption{
+      margin-top:0.7rem;
+      color:rgba(255,255,255,0.72);
+      font-size:0.95rem;
+      line-height:1.6;
+    }
+
+    /* =========================
+      Reduced Motion
+    ========================== */
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto !important;}
+      *{scroll-behavior:auto !important;}
+      .hero-entrance,.reveal{transition:none !important;transform:none !important;}
+      .scroll-hint{animation:none !important;}
+      .typewriter-line.typing::after{animation:none !important;}
+      .fog-layer{animation:none !important;}
+      .fog-layer::before,.fog-layer::after{animation:none !important;}
+      .hscroll-track{transition:none !important;}
+    }
+
+    /* =========================
+      Mobile
+    ========================== */
+    @media (max-width: 900px){
+      :root{ --navH: 86px; }
+      .sticky-wrap, .sv-wrap{grid-template-columns:1fr;}
+      .sticky-media, .sv-video{top:calc(var(--navH) + 8px);}
+      .sticky-media img, .sticky-media video, .sv-video video{height:56vh;}
+      .panel{
+        grid-template-columns:1fr;
+        align-content:start;
+        padding:6vh 8vw;
+      }
+      .panel .panel-media img, .panel .panel-media video{height:40vh;}
+    }
+    @media (max-width: 768px){
+      .hero{padding:4vh 8vw;}
+      .hero-content{flex:1 1 auto;min-height:auto;}
+      .hero-image{right:-5vw;bottom:1rem;opacity:0.62;}
+      .hero-image img{width:min(78vw,420px);max-height:60vh;}
+      .hero h1,.hero h2{white-space:normal;}
+      .scroll-hint{letter-spacing:0.2em;bottom:2rem;}
+      .mini-nav-inner{padding:0.65rem 6vw 0.55rem;}
+      .progressbar{margin:0 6vw 0.55rem;}
+    }
+  </style>
 </head>
+
 <body>
-  <header>
-    <h1>人工智慧發展大事記</h1>
-    <p>透過互動時間軸，探索 AI 研究的高峰與低谷</p>
-  </header>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <div class="fog-layer" aria-hidden="true"></div>
 
-  <section class="intro-section">
-    <p>
-      人工智慧的發展歷程充滿<span class="highlight">起伏波折</span>。從 1950 年代的<span class="highlight wave">樂觀浪潮</span>，到多次的<span class="highlight crisis">AI 寒冬</span>，再到近年的<span class="highlight wave">深度學習革命</span>，這段歷史不僅是技術演進，更是人類對智慧本質探索的縮影。
-    </p>
-  </section>
+    <section class="landing-video" aria-label="開場舞台影片">
+    <video
+      id="landing-video"
+      src="assets/stage.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"></video>
+  </section>
 
-  <div class="spacer"></div>
+    <section class="buffer" aria-hidden="true"></section>
 
-  <!-- 翻卡 1：1956 達特茅斯會議 -->
-  <div class="timeline-event">
-    <div class="flip-card" data-flip-trigger>
-      <div class="card-inner">
-        <div class="card-face card-front">
-          <div class="card-front-placeholder">
-            <h3>1956<br>達特茅斯會議<br>AI 誕生</h3>
-          </div>
-        </div>
-        <div class="card-face card-back">
-          <span class="event-tag tag-peak">● 突破性發現</span>
-          <div class="event-year">1956</div>
-          <h2 class="event-title">達特茅斯會議：人工智慧的誕生</h2>
-          <div class="event-description">
-            <p>John McCarthy、Marvin Minsky、Claude Shannon 等科學家齊聚達特茅斯學院，首次提出「人工智慧」一詞。這次會議標誌著 AI 作為獨立學科的誕生。</p>
-            <div class="event-impact">
-              <strong>影響力</strong>
-              <p>開啟了長達數十年的 AI 研究浪潮，奠定符號推理、問題求解等基礎範式。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <section class="hero" aria-label="專題標題">
+    <div class="hero-content">
+      <h1 id="hero-title" class="typewriter-line hero-entrance" data-text="唱給不在場的人" style="--delay:0ms;"></h1>
+      <h2 id="hero-subtitle" class="typewriter-line hero-entrance" data-text="紅包歌手的世代誤解與生存現場" style="--delay:150ms;"></h2>
+      <h3 id="hero-author" class="hero-author hero-entrance" style="--delay:300ms;">梁朝勛、彭賀琳、莊馨予</h3>
+    </div>
 
-  <!-- Focus Mode 章節 1：黃金時代 -->
-  <section class="research-phase" data-section>
-    <div class="phase-header">
-      <span class="phase-period">1956-1974</span>
-    </div>
-    <h2 class="phase-title">黃金時代：早期的樂觀主義</h2>
-    <div class="phase-content">
-      <p>
-        在達特茅斯會議後，AI 研究進入<span class="highlight wave">第一個黃金時代</span>。研究者們開發出能夠<span class="highlight">證明數學定理</span>、<span class="highlight">下西洋棋</span>、<span class="highlight">理解自然語言</span>的程式，展現出驚人的潛力。
-      </p>
-      <p>
-        LISP 語言的發明、專家系統的雛形、機器學習的早期探索，都在這個時期開花結果。許多研究者預測，<span class="highlight">通用人工智慧將在 20 年內實現</span>。
-      </p>
-      <div class="key-researchers">
-        <strong>關鍵人物</strong>
-        Herbert Simon 預言：「機器將在 20 年內能做任何人類能做的工作」（1965）
-      </div>
-    </div>
-  </section>
+    <div class="hero-image hero-entrance" style="--delay:0ms;">
+            <img
+        src="assets/img/yang-yaqiao.jpg" 
+        alt="紅包場歌手楊雅喬"
+        decoding="async"
+        loading="eager"
+        fetchpriority="high">
+    </div>
 
-  <div class="spacer"></div>
+    <div id="scroll-hint" class="scroll-hint">SCROLL ↓</div>
+  </section>
 
-  <!-- 翻卡 2：第一次 AI 寒冬 -->
-  <div class="timeline-event">
-    <div class="flip-card" data-flip-trigger>
-      <div class="card-inner">
-        <div class="card-face card-front">
-          <div class="card-front-placeholder">
-            <h3>1974-1980<br>第一次 AI 寒冬<br>資金與信心危機</h3>
-          </div>
-        </div>
-        <div class="card-face card-back">
-          <span class="event-tag tag-valley">● 研究低谷</span>
-          <div class="event-year">1974</div>
-          <h2 class="event-title">第一次 AI 寒冬</h2>
-          <div class="event-description">
-            <p>過度樂觀的預測未能兌現，英美政府大幅削減 AI 研究經費。Lighthill Report 嚴厲批評 AI 研究缺乏實際成果。</p>
-            <div class="event-impact">
-              <strong>核心問題</strong>
-              <p>組合爆炸、常識知識難以形式化、運算資源不足等根本性挑戰浮現。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <nav class="mini-nav" aria-label="章節導覽">
+    <div class="mini-nav-inner" role="navigation">
+      <a href="#chapter-hook" data-section="chapter-hook">01 HOOK</a>
+      <a href="#chapter-redpacket" data-section="chapter-redpacket">02 紅包</a>
+      <a href="#chapter-order" data-section="chapter-order">03 秩序</a>
+      <a href="#chapter-elements" data-section="chapter-elements">04 六大元素</a>
+      <a href="#chapter-interviews" data-section="chapter-interviews">05 訪談</a>
+    </div>
+    <div class="progressbar" aria-hidden="true"><div id="progress-fill"></div></div>
+  </nav>
 
-  <!-- Focus Mode 章節 2：專家系統時代 -->
-  <section class="research-phase" data-section>
-    <div class="phase-header">
-      <span class="phase-period">1980-1987</span>
-    </div>
-    <h2 class="phase-title">專家系統的復興與商業化</h2>
-    <div class="phase-content">
-      <p>
-        1980 年代，<span class="highlight wave">專家系統</span>帶來 AI 的第二次春天。MYCIN、DENDRAL 等系統在<span class="highlight">醫療診斷</span>和<span class="highlight">化學分析</span>領域展現實用價值，吸引大量商業投資。
-      </p>
-      <p>
-        日本啟動<span class="highlight">第五代電腦計畫</span>，投入巨額經費研發基於邏輯推理的智慧系統。美國和歐洲緊跟其後，掀起 AI 投資熱潮。
-      </p>
-      <div class="key-researchers">
-        <strong>代表成果</strong>
-        專家系統市場規模達到數十億美元，但維護成本高昂、知識獲取困難的問題逐漸浮現。
-      </div>
-    </div>
-  </section>
+  <main id="main">
+        <section class="chapter sticky-section" id="chapter-hook" aria-label="章節一：紅包場與刻板印象">
+      <div class="sticky-wrap">
+        <div class="sticky-media" aria-hidden="true">
+          <img
+            id="compare-media"
+            src="assets/photo/DSC04754.jpg"
+            alt="紅包場內景"
+            loading="eager"
+            decoding="async">
+        </div>
 
-  <div class="spacer"></div>
+        <div class="sticky-text">
+          <div class="kicker reveal">CHAPTER 01</div>
+          <h2 class="reveal">紅包場，和你想的不一樣</h2>
+          <p class="lead reveal">把它誤會成「某種刺激消費」很容易；但真正的樣貌，往往只在你坐下來之後，才慢慢浮現。</p>
 
-  <!-- 翻卡 3：第二次 AI 寒冬 -->
-  <div class="timeline-event">
-    <div class="flip-card" data-flip-trigger>
-      <div class="card-inner">
-        <div class="card-face card-front">
-          <div class="card-front-placeholder">
-            <h3>1987-1993<br>第二次 AI 寒冬<br>專家系統泡沫破滅</h3>
-          </div>
-        </div>
-        <div class="card-face card-back">
-          <span class="event-tag tag-valley">● 產業危機</span>
-          <div class="event-year">1987</div>
-          <h2 class="event-title">第二次 AI 寒冬：專家系統的衰落</h2>
-          <div class="event-description">
-            <p>專家系統的局限性暴露無遺：難以擴展、維護成本極高、無法處理不確定性。桌上型電腦的普及使專用 AI 硬體失去市場。</p>
-            <div class="event-impact">
-              <strong>轉折點</strong>
-              <p>AI 研究轉向更踏實的機器學習方法，但「AI」一詞在商業上成為禁忌。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+          <div class="sticky-step reveal js-sticky-step is-active"
+            data-media="assets/photo/DSC04754.jpg">
+            <span class="label">COMPARE 01</span>
+            <div class="text">它常被拿來和 <span class="tip" data-tip="紅包場不以「清涼」或「火辣」為賣點">牛肉場</span>混為一談，但紅包場的核心是「聽歌」：觀眾把注意力給表演，歌手把完整的演出給舞台。</div>
+          </div>
 
-  <!-- Focus Mode 章節 3：機器學習崛起 -->
-  <section class="research-phase" data-section>
-    <div class="phase-header">
-      <span class="phase-period">1993-2011</span>
-    </div>
-    <h2 class="phase-title">機器學習的靜默革命</h2>
-    <div class="phase-content">
-      <p>
-        在 AI 寒冬過後，研究者們轉向<span class="highlight">統計學習</span>和<span class="highlight">概率方法</span>。支持向量機（SVM）、隨機森林等演算法在實際應用中取得成功，但刻意避免使用「AI」標籤。
-      </p>
-      <p>
-        這個時期的<span class="highlight">關鍵轉變</span>是：從手工設計規則轉向從數據中學習模式。雖然進展穩定，但缺乏突破性成果，研究主要集中在學術界。
-      </p>
-      <div class="key-researchers">
-        <strong>重要里程碑</strong>
-        1997 年 IBM 深藍擊敗國際象棋冠軍 Kasparov，但被視為暴力計算而非真正智慧。
-      </div>
-    </div>
-  </section>
+          <div class="sticky-step reveal js-sticky-step"
+            data-media="assets/img/singer.jpg">             <span class="label">COMPARE 02</span>
+            <div class="text">它也不等同 <span class="tip" data-tip="紅包場是老少宜的場所">舞廳</span>。紅包場裡，主角始終在台上，秩序與默契反而更像一套「固定座位的劇場」。</div>
+          </div>
 
-  <div class="spacer"></div>
+          <div class="sticky-step reveal js-sticky-step"
+            data-media="assets/photo/DSC04900.jpg">
+            <span class="label">COMPARE 03</span>
+            <div class="text">你可以把它和 <span class="tip" data-tip="紅包場觀眾不會上台唱歌">卡拉OK</span>區分開來：紅包場觀眾多半不登台，點歌、聽歌、聊天，維持的是「台上台下」的距離。</div>
+          </div>
 
-  <!-- 翻卡 4：深度學習革命 -->
-  <div class="timeline-event">
-    <div class="flip-card" data-flip-trigger>
-      <div class="card-inner">
-        <div class="card-face card-front">
-          <div class="card-front-placeholder">
-            <h3>2012<br>深度學習突破<br>ImageNet 革命</h3>
-          </div>
-        </div>
-        <div class="card-face card-back">
-          <span class="event-tag tag-peak">● 範式轉移</span>
-          <div class="event-year">2012</div>
-          <h2 class="event-title">ImageNet 時刻：深度學習的勝利</h2>
-          <div class="event-description">
-            <p>Geoffrey Hinton 團隊的 AlexNet 在 ImageNet 競賽中以壓倒性優勢獲勝，錯誤率比第二名低 10.8%。這標誌著深度學習時代的開啟。</p>
-            <div class="event-impact">
-              <strong>技術突破</strong>
-              <p>GPU 加速、大數據、ReLU 激活函數、Dropout 正則化的結合，終於讓深度神經網路展現潛力。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+          <div class="sticky-step reveal js-sticky-step"
+            data-media="assets/photo/DSC09319.jpg">
+            <span class="label">COMPARE 04</span>
+            <div class="text">它也不同於 <span class="tip" data-tip="紅包場歌手需要穿著「禮服」上台">Livehouse</span>。紅包場的舞台更像「秀場」：禮服、燈光、稱號、流程，構成一種職業規範。</div>
+          </div>
 
-  <!-- Focus Mode 章節 4：AI 春天 -->
-  <section class="research-phase" data-section>
-    <div class="phase-header">
-      <span class="phase-period">2012-現在</span>
-    </div>
-    <h2 class="phase-title">深度學習時代：新的黃金年代</h2>
-    <div class="phase-content">
-      <p>
-        自 2012 年後，AI 進入<span class="highlight wave">爆發式發展期</span>。<span class="highlight">影像識別</span>、<span class="highlight">語音辨識</span>、<span class="highlight">機器翻譯</span>、<span class="highlight">自動駕駛</span>等領域取得突破性進展。
-      </p>
-      <p>
-        2016 年 AlphaGo 擊敗李世乭，2017 年 Transformer 架構發表，2022 年 ChatGPT 引發全球轟動。AI 不再是實驗室技術，而是<span class="highlight wave">改變社會的力量</span>。
-      </p>
-      <p>
-        然而，<span class="highlight crisis">新的挑戰</span>也浮現：模型可解釋性、偏見問題、能源消耗、安全性風險、就業衝擊等。我們是否會迎來<span class="highlight crisis">第三次 AI 寒冬</span>？還是終將實現<span class="highlight">通用人工智慧</span>？
-      </p>
-      <div class="key-researchers">
-        <strong>當前思考</strong>
-        歷史告訴我們：技術進步從來不是線性的，而是充滿波折的螺旋上升。
-      </div>
-    </div>
-  </section>
+          <div class="sticky-step reveal js-sticky-step"
+            data-media="assets/photo/DSC09375.jpg">
+            <span class="label">COMPARE 05</span>
+            <div class="text">更別說 <span class="tip" data-tip="紅包場的觀眾是特地來聽歌的">流水席</span>：紅包場的觀眾是為了歌而來，餐飲只是把時間留在現場的方式。</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <footer>
-    <p>© 學術研究互動大事記範例 | 使用原生 JavaScript + CSS 實現三種 scroll 觸發效果</p>
-    <p style="margin-top: 12px; font-size: 12px; color: #64748b;">
-      翻卡效果 | Focus Mode | 動態底線
-    </p>
-  </footer>
+        <section class="chapter sticky-section" id="chapter-redpacket" aria-label="章節二：紅包的意義">
+      <div class="sticky-wrap">
+        <div class="sticky-media">
+          <video id="redpacket-loop" muted loop playsinline preload="metadata" poster="assets/photo/DSC09375.jpg">
+            <source src="assets/video/c0621.mp4" type="video/mp4" />
+          </video>
+        </div>
 
-  <div class="scroll-hint">
-    <span>向下滾動探索</span>
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-    </svg>
-  </div>
+        <div class="sticky-text">
+          <div class="kicker reveal">CHAPTER 02</div>
+          <h2 class="reveal">紅包的意義：支持表演，而不是購買身體</h2>
 
-  <script>
-    // 節流函數
-    function throttle(fn, wait = 100) {
-      let last = 0, timer;
-      return function(...args) {
-        const now = Date.now();
-        if (now - last >= wait) {
-          last = now;
-          fn.apply(this, args);
-        } else {
-          clearTimeout(timer);
-          timer = setTimeout(() => {
-            last = Date.now();
-            fn.apply(this, args);
-          }, wait - (now - last));
-        }
-      };
-    }
+          <p class="lead reveal">把「紅包」理解成交易，很快；但在現場，它更像一種回應：喜歡、尊重、面子、人情，最後都落在一個小小的信封裡。</p>
 
-    // 1) 翻卡效果：當卡片中心到達視窗 50% 時翻轉
-    (function initFlipCards() {
-      const cards = document.querySelectorAll('[data-flip-trigger]');
-      
-      function checkFlip() {
-        cards.forEach(card => {
-          if (card.dataset.flipped) return;
-          
-          const rect = card.getBoundingClientRect();
-          const center = rect.top + rect.height / 2;
-          const mid = window.innerHeight * 0.5;
-          const tolerance = window.innerHeight * 0.08;
-          
-          if (Math.abs(center - mid) <= tolerance) {
-            card.classList.add('flipped');
-            card.dataset.flipped = '1';
-          }
-        });
-      }
-      
-      window.addEventListener('scroll', throttle(checkFlip, 80), { passive: true });
-      window.addEventListener('resize', throttle(checkFlip, 120));
-      checkFlip();
-    })();
+          <div class="sticky-step reveal js-sticky-step-2 is-active"
+            data-media="assets/photo/DSC04754.jpg"
+            data-kind="img">
+            <span class="label">POINT 01</span>
+            <div class="text">紅包場是歌手、表演者與觀眾最直接互動的地方。觀眾用紅包表達喜歡，歌手用表演回應掌聲。</div>
+          </div>
 
-    // 2) Focus Mode：當章節底部接近離開視窗時聚焦
-    (function initFocusMode() {
-      const sections = Array.from(document.querySelectorAll('[data-section]'));
-      if (sections.length === 0) return;
+          <div class="sticky-step reveal js-sticky-step-2"
+            data-media="assets/img/redpacket.jpg"
+            data-kind="img">
+            <span class="label">POINT 02</span>
+            <div class="text">紅包不是對身體的購買，而是對「表演」的支持；觀眾來聽歌、點歌、聊天，建立的是長時間的人情關係。</div>
+          </div>
 
-      function applyFocus() {
-        let focal = null;
-        const threshold = 150;
-        
-        for (const section of sections) {
-          const rect = section.getBoundingClientRect();
-          const distanceToBottom = window.innerHeight - rect.bottom;
-          
-          if (rect.top < window.innerHeight && 
-              rect.bottom > 0 && 
-              distanceToBottom < threshold && 
-              distanceToBottom > -threshold) {
-            focal = section;
-            break;
-          }
-        }
-        
-        if (focal) {
-          document.body.classList.add('focus-mode');
-          sections.forEach(s => s.classList.toggle('is-focal', s === focal));
-        } else {
-          document.body.classList.remove('focus-mode');
-          sections.forEach(s => s.classList.remove('is-focal'));
-        }
-      }
-      
-      window.addEventListener('scroll', throttle(applyFocus, 80), { passive: true });
-      window.addEventListener('resize', throttle(applyFocus, 120));
-      applyFocus();
-    })();
+          <div class="sticky-step reveal js-sticky-step-2"
+            data-media="assets/photo/DSC09375.jpg"
+            data-kind="img">
+            <span class="label">POINT 03</span>
+            <div class="text">紅包場的文化內涵，來自「茶單」制度：歌星承擔賓客的飲食消費，賓客則包高出消費金額的紅包交給所捧場的歌星。</div>
+          </div>
 
-    // 3) 動態底線：當關鍵詞進入視窗時展開底線
-    (function initHighlights() {
-      const highlights = document.querySelectorAll('.highlight');
-      if (highlights.length === 0) return;
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-          } else {
-            entry.target.classList.remove('active');
-          }
-        });
-      }, {
-        root: null,
-        rootMargin: '0px 0px -15% 0px',
-        threshold: 0.1
-      });
-      
-      highlights.forEach(h => observer.observe(h));
-    })();
+          <div class="sticky-step reveal js-sticky-step-2"
+            data-media="assets/img/assistant.jpg"             data-kind="img">
+            <span class="label">POINT 04</span>
+            <div class="text">多出來的金額成為鼓勵，也讓「紅包」成為關係的可見形式：不是一次性的刺激消費，而是累積的信任與照顧。</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    // 隱藏滾動提示
-    let scrolled = false;
-    window.addEventListener('scroll', function() {
-      if (!scrolled && window.scrollY > 100) {
-        scrolled = true;
-        const hint = document.querySelector('.scroll-hint');
-        if (hint) hint.style.opacity = '0';
-      }
-    }, { passive: true });
-  </script>
+        <section class="chapter" id="chapter-order" aria-label="章節三：仍在運作的秩序">
+      <div class="chapter-inner">
+        <div class="kicker reveal">CHAPTER 03</div>
+        <h2 class="reveal">一個仍在運作的秩序</h2>
+
+        <div class="order-stage reveal" id="order-stage">
+          <p class="js-order-line">坐進觀眾席後，紅包場的日常很快展開。茶水與水果盤被送上桌，「小妹」在場內來回穿梭，確認每一桌的狀態。</p>
+          <p class="js-order-line">對第一次進場的人來說，這套秩序未必容易理解：座位距離近，舞台與觀眾幾乎沒有明確分界；任何多餘的動作，都顯得突兀。</p>
+          <p class="js-order-line">這種不自在，並非來自危險或衝突，而是來自——<strong>不知道自己該如何被放進這個空間</strong>。</p>
+        </div>
+
+        <div class="hr reveal"></div>
+
+        <p class="reveal js-order-line">在現場，新面孔很少被直接問「覺得好不好」。更常出現的，是另一個問題：<strong>「怎麼會來這裡？」</strong></p>
+        <p class="note reveal js-order-line">年輕人的出現往往被理解成「帶著目的」：作業、報導、拍攝、找題材。於是紅包場面對新世代時，常同時帶著開放與防備。</p>
+      </div>
+    </section>
+
+        <section class="chapter hscroll" id="chapter-elements" aria-label="章節四：六大元素">
+      <div class="hscroll-head">
+        <div class="kicker reveal">CHAPTER 04</div>
+        <h2 class="reveal">撐起紅包場的人與物</h2>
+        <p class="reveal">把六大元素做成走廊式展覽：你不是讀清單，而是被帶著走進場內，逐一看見系統如何運作。</p>
+        <p class="note reveal">操作：慢慢往下捲（這段會橫向推進）。點「展開更多」可打開深度素材。</p>
+      </div>
+
+      <div class="hscroll-pin" aria-hidden="false">
+        <div class="hscroll-track" id="hscroll-track">
+                    <section class="panel"
+            data-title="歌星"
+            data-subtitle="THE SINGER"
+            data-body="歌星輪番登台，每人2-3首歌曲的時間，跑馬燈穿過個人稱號，歌星穿著禮服盛裝登場，帶來經典好歌，除了手工製作演唱服裝，更拜師學歌藝精益求精，透過舞台展現自信與對歌唱的喜愛，演出期間嚴守在台上不會走到台下，在歌廳盛行的年代，還要連跑好幾場，盛況空前，紅包場也捧紅眾多電視新星。"
+            data-media-type="img"
+            data-media-src="assets/img/singer.jpg"             data-media-caption="舞台上的歌星 (assets/img/singer.jpg)">
+            <div>
+              <h3>歌星</h3>
+              <div class="tagline">THE SINGER</div>
+              <div class="desc">輪番登台、禮服盛裝。二到三首歌的時間，是一輩子累積的職業身段。</div>
+              <button class="cta js-open-modal" type="button">＋ 展開更多</button>
+            </div>
+            <div class="panel-media">
+              <img src="assets/img/singer.jpg" alt="歌星｜舞台畫面" loading="lazy" decoding="async">
+            </div>
+          </section>
+
+                    <section class="panel"
+            data-title="樂團老師"
+            data-subtitle="THE BAND"
+            data-body="樂團老師全天候在舞臺後方，對於鼓、效果器、各式新舊歌曲高度熟悉，偶爾搭配上自身的合音，為每場歌星演唱增添風情，透過1至2位樂團老師，現場的音場讓人穿梭時空，感受情調並隨之舞動。"
+            data-media-type="img"
+            data-media-src="assets/img/band.jpg"             data-media-caption="舞台後方、鼓組與音效設備 (assets/img/band.jpg)">
+            <div>
+              <h3>樂團老師</h3>
+              <div class="tagline">THE BAND</div>
+              <div class="desc">一到兩位老師撐起全場音場。鼓點與合音，讓情緒在年代之間流動。</div>
+              <button class="cta js-open-modal" type="button">＋ 展開更多</button>
+            </div>
+            <div class="panel-media">
+              <img src="assets/img/band.jpg" alt="舞台｜器材與燈光" loading="lazy" decoding="async">
+            </div>
+          </section>
+
+                    <section class="panel"
+            data-title="小妹"
+            data-subtitle="THE CONNECTOR"
+            data-body="在場內穿梭的小妹擔任服務生的角色，在端茶、倒水、引導客人包紅包方式之外，成為歌星穩固業績、建立關係的重要搭擋。歌廳也會規定禁止搶客，否則會遭人側目嘴舌。"
+            data-media-type="img"
+            data-media-src="assets/img/assistant.jpg"             data-media-caption="場內服務與走動的背影 (assets/img/assistant.jpg)">
+            <div>
+              <h3>小妹</h3>
+              <div class="tagline">THE CONNECTOR</div>
+              <div class="desc">穿梭場內、送茶引位、協助包紅包。她是秩序的流動節點，也是關係的媒介。</div>
+              <button class="cta js-open-modal" type="button">＋ 展開更多</button>
+            </div>
+            <div class="panel-media">
+              <img src="assets/photo/DSC09375.jpg" alt="桌面｜茶水與水果盤" loading="lazy" decoding="async">
+            </div>
+          </section>
+
+                    <section class="panel"
+            data-title="服裝"
+            data-subtitle="THE COSTUME"
+            data-body="每位歌星在登場前會提早至舞台旁的服裝間換衣服，每件禮服、表演服裝的背後都有特製、手工製作等獨特故事，紅包場中的服裝也因歌星的個人風格、偏好息息相關，比如黑色的沈著低調、亮綠色的活潑外向，又甚至是帽子、首飾等搭配都有所學問，彰顯每次歌唱呈現背後的用心累積。"
+            data-media-type="img"
+            data-media-src="assets/img/costume.jpg"             data-media-caption="手工或訂製的禮服與更衣空間 (assets/img/costume.jpg)">
+            <div>
+              <h3>服裝</h3>
+              <div class="tagline">THE COSTUME</div>
+              <div class="desc">手作或訂製的禮服，是歌唱之外的另一種創作：把年代、性格與舞台放在身上。</div>
+              <button class="cta js-open-modal" type="button">＋ 展開更多</button>
+            </div>
+            <div class="panel-media">
+              <img src="assets/img/costume.jpg" alt="服裝｜更衣空間與衣物" loading="lazy" decoding="async">
+            </div>
+          </section>
+
+                    <section class="panel"
+            data-title="餐飲"
+            data-subtitle="THE TABLE"
+            data-body="在桌面常見的像是瓜子、水果盤，或者是普洱、烏龍、清茶等選項，隨著經營者的商業考量，也會有熱炒、啤酒，有時也會由歌星個人推薦或贈送像是炒花生、果醬等增進情感，點餐與結款將以「茶單制」進行，用餐區域多以舞台現場開放空間為主，開包廂者較少數。"
+            data-media-type="img"
+            data-media-src="assets/img/food.jpg"             data-media-caption="桌面日常：茶水、水果盤、瓜子 (assets/img/food.jpg)">
+            <div>
+              <h3>餐飲</h3>
+              <div class="tagline">THE TABLE</div>
+              <div class="desc">茶水、水果盤、熱炒與啤酒。在茶單制裡，餐飲也是人情往來的日常語言。</div>
+              <button class="cta js-open-modal" type="button">＋ 展開更多</button>
+            </div>
+            <div class="panel-media">
+              <img src="assets/img/food.jpg" alt="餐飲｜茶水與水果盤" loading="lazy" decoding="async">
+            </div>
+          </section>
+
+                    <section class="panel"
+            data-title="紅包"
+            data-subtitle="THE RED ENVELOPE"
+            data-body="紅包場最經典的畫面，是歌星演唱期間，透過聽眾或小妹，親手由臺下交付紅包給予歌星，紅包內的金額，無論是100元、300元、1000元皆隨心隨緣，過往如需凸顯個人，也會將大面額的鈔票露出，為喜愛的歌星「做面子」，甚至有觀眾爭相包紅包的景象。紅包是對表演的支持、是長期關係的證明。"
+            data-media-type="img"
+            data-media-src="assets/img/redpacket.jpg"             data-media-caption="紅包交付瞬間 (assets/img/redpacket.jpg)">
+            <div>
+              <h3>紅包</h3>
+              <div class="tagline">THE RED ENVELOPE</div>
+              <div class="desc">紅包不是交易，而是支持與面子、人情、記憶的可見形式。</div>
+              <button class="cta js-open-modal" type="button">＋ 展開更多</button>
+            </div>
+            <div class="panel-media">
+              <img src="assets/img/redpacket.jpg" alt="紅包｜交付瞬間" loading="lazy" decoding="async">
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="hscroll-spacer" id="hscroll-spacer" aria-hidden="true"></div>
+    </section>
+
+        <section class="chapter" id="chapter-interviews" aria-label="章節五：訪談精華">
+      <div class="chapter-inner">
+        <div class="kicker reveal">CHAPTER 05</div>
+        <h2 class="reveal">他們怎麼說：讓影像成為證據</h2>
+        <p class="reveal">你捲到哪一句，影片就跳到對應時間點。</p>
+
+        <div class="sv-wrap">
+          <div class="sv-video reveal">
+                        <video id="sv-video" controls preload="metadata" playsinline poster="assets/photo/DSC09448.jpg">
+              <source id="sv-source" src="assets/video/c0662.mp4" type="video/mp4" />
+              你的瀏覽器不支援影片播放。
+            </video>
+        </div>
+
+          <div class="sv-lines">
+                        <div class="sv-line reveal js-sv-line is-active" data-src="assets/video/c0662.mp4" data-poster="assets/photo/DSC09448.jpg" data-time="0">
+              <div class="quoteText">「臺上臺下，我是不一樣的人。」</div>
+              <div class="who">— 楊雅喬</div>
+            </div>
+
+            <div class="sv-line reveal js-sv-line" data-src="assets/video/c0626.mp4" data-poster="assets/img/jin-ziyan.jpg" data-time="18">
+              <div class="quoteText">「這些對我們來講是很普通的事情，但對你們來說很感動。」</div>
+              <div class="who">— 翟曼芳</div>
+            </div>
+
+            <div class="sv-line reveal js-sv-line" data-src="assets/video/c0621.mp4" data-poster="assets/img/redpacket.jpg" data-time="42">
+              <div class="quoteText">「歌廳假如沒有了，其他地方也沒有我們生存的空間了……」</div>
+              <div class="who">— 翟曼芳</div>
+            </div>
+
+            <div class="sv-line reveal js-sv-line" data-src="assets/video/c0662.mp4" data-poster="assets/img/yang-yaqiao.jpg" data-time="63">
+              <div class="quoteText">「你們怎麼會來這裡？」</div>
+              <div class="who">— 場內常見的第一句話</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+    <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="modal-title">標題</div>
+          <div class="note" id="modal-subtitle" style="margin-top:.35rem;">SUBTITLE</div>
+        </div>
+        <button class="modal-close" id="modal-close" type="button" aria-label="關閉視窗">關閉</button>
+        </div>
+
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-media" id="modal-media"></div>
+      <div class="modal-caption" id="modal-caption"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
+      const $  = (s, root=document) => root.querySelector(s);
+      const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
+
+      /* =========================
+        HERO: typewriter + entrance
+      ========================== */
+      const hero = $(".hero");
+      const titleEl = $("#hero-title");
+      const subtitleEl = $("#hero-subtitle");
+      const scrollHint = $("#scroll-hint");
+      const landingVideo = $("#landing-video");
+      const typeTargets = [titleEl, subtitleEl].filter(Boolean);
+      const heroEntrances = $$(".hero-entrance");
+      let hasRun = false;
+
+      typeTargets.forEach((el) => {
+        const text = el.dataset.text || el.textContent.trim();
+        el.dataset.text = text;
+        el.textContent = "";
+      });
+
+      const typeText = (el, speed = 85) =>
+        new Promise((resolve) => {
+          const text = el.dataset.text || "";
+          let index = 0;
+          el.classList.add("typing");
+          const tick = () => {
+            el.textContent += text.charAt(index);
+            index += 1;
+            if (index < text.length) setTimeout(tick, speed);
+            else {
+              el.classList.remove("typing");
+              el.classList.add("done");
+              resolve();
+            }
+          };
+          tick();
+        });
+
+      const startSequence = async () => {
+        if (hasRun) return;
+        hasRun = true;
+        heroEntrances.forEach((item) => item.classList.add("is-visible"));
+        for (const el of typeTargets) await typeText(el);
+        requestAnimationFrame(() => setTimeout(() => scrollHint?.classList.add("visible"), 350));
+      };
+
+      if ("IntersectionObserver" in window && hero) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              startSequence();
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.35 });
+        observer.observe(hero);
+      } else {
+        startSequence();
+      }
+
+      /* =========================
+        Landing video: keep muted autoplay
+      ========================== */
+      if (landingVideo) {
+        const attemptPlay = () => {
+          const p = landingVideo.play();
+          if (p && typeof p.then === "function") p.catch(() => {});
+        };
+        attemptPlay();
+      }
+
+      /* =========================
+        Reveal on scroll
+      ========================== */
+      const revealEls = $$(".reveal");
+      if ("IntersectionObserver" in window) {
+        const revealObs = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("is-visible"); });
+        }, { threshold: 0.18 });
+        revealEls.forEach((el) => revealObs.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add("is-visible"));
+      }
+
+      /* =========================
+        Sticky mini nav active state
+      ========================== */
+      const navLinks = $$(".mini-nav a[data-section]");
+      const sections = navLinks.map(a => document.getElementById(a.dataset.section)).filter(Boolean);
+      const setActive = (id) => navLinks.forEach(a => a.classList.toggle("active", a.dataset.section === id));
+
+      if ("IntersectionObserver" in window && sections.length) {
+        const secObs = new IntersectionObserver((entries) => {
+          const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible) setActive(visible.target.id);
+        }, { threshold: [0.22, 0.35, 0.5, 0.65] });
+        sections.forEach(s => secObs.observe(s));
+      }
+
+      /* =========================
+        Progress bar (page progress)
+      ========================== */
+      const progressFill = $("#progress-fill");
+      const updateProgress = () => {
+        if (!progressFill) return;
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollH = doc.scrollHeight - doc.clientHeight;
+        const p = scrollH > 0 ? (scrollTop / scrollH) * 100 : 0;
+        progressFill.style.width = `${clamp(p, 0, 100)}%`;
+      };
+      window.addEventListener("scroll", updateProgress, { passive: true });
+      updateProgress();
+
+      /* =========================
+        Chapter 01 Sticky Compare
+      ========================== */
+      const compareMedia = $("#compare-media");
+      const compareSteps = $$(".js-sticky-step");
+      const setActiveStep = (steps, activeEl) => steps.forEach(s => s.classList.toggle("is-active", s === activeEl));
+
+      if (compareMedia && compareSteps.length && "IntersectionObserver" in window) {
+        const obs = new IntersectionObserver((entries) => {
+          const candidates = entries.filter(e => e.isIntersecting);
+          if (!candidates.length) return;
+          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio);
+          const top = candidates[0].target;
+
+          setActiveStep(compareSteps, top);
+          const src = top.dataset.media;
+          if (src && compareMedia.getAttribute("src") !== src) compareMedia.src = src;
+        }, { threshold: [0.35, 0.5, 0.65, 0.8] });
+
+        compareSteps.forEach(s => obs.observe(s));
+      }
+
+      /* =========================
+        Chapter 02 Sticky Narrative: keep loop playing + swap poster hint
+      ========================== */
+      const loopVideo = $("#redpacket-loop");
+      if (loopVideo) {
+        const tryPlay = () => {
+          const p = loopVideo.play();
+          if (p && typeof p.then === "function") p.catch(() => {});
+        };
+        tryPlay();
+      }
+
+      const steps2 = $$(".js-sticky-step-2");
+      if (steps2.length && "IntersectionObserver" in window) {
+        const obs2 = new IntersectionObserver((entries) => {
+          const candidates = entries.filter(e => e.isIntersecting);
+          if (!candidates.length) return;
+          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio);
+          const top = candidates[0].target;
+
+          setActiveStep(steps2, top);
+
+          const media = top.dataset.media;
+          const kind = top.dataset.kind;
+          if (loopVideo && media) {
+            if (kind === "img" || kind === "poster") loopVideo.poster = media;
+          }
+        }, { threshold: [0.35, 0.5, 0.65, 0.8] });
+
+        steps2.forEach(s => obs2.observe(s));
+      }
+
+      /* =========================
+        Chapter 03: scroll-lit stage
+      ========================== */
+      const orderStage = $("#order-stage");
+      const orderLines = $$(".js-order-line");
+      if (orderStage && orderLines.length && "IntersectionObserver" in window) {
+        const obs3 = new IntersectionObserver((entries) => {
+          const any = entries.some(e => e.isIntersecting);
+          if (any) orderStage.classList.add("is-lit");
+        }, { threshold: 0.55 });
+
+        orderLines.forEach(l => obs3.observe(l));
+      } else if (orderStage) {
+        orderStage.classList.add("is-lit");
+      }
+
+      /* =========================
+        Chapter 04 Horizontal scroll
+      ========================== */
+      const hscrollSection = $("#chapter-elements");
+      const track = $("#hscroll-track");
+      const spacer = $("#hscroll-spacer");
+      const head = hscrollSection ? hscrollSection.querySelector(".hscroll-head") : null;
+      const panels = track ? track.querySelectorAll(".panel").length : 0;
+
+      const getNavH = () => {
+        const style = getComputedStyle(document.documentElement);
+        return parseFloat(style.getPropertyValue("--navH")) || 92;
+      };
+
+      const setSpacerHeight = () => {
+        if (!spacer || panels < 2) return;
+        const vh = window.innerHeight;
+        spacer.style.height = `${(panels - 1) * vh + Math.round(vh * 0.4)}px`;
+      };
+
+      const updateHScroll = () => {
+        if (!hscrollSection || !track || panels < 2) return;
+
+        const navH = getNavH();
+        const sectionTop = hscrollSection.offsetTop;
+        const headH = head ? head.offsetHeight : 0;
+        const pin = hscrollSection.querySelector(".hscroll-pin");
+
+        if (!pin || !spacer) return;
+
+        const pinStart = sectionTop + headH;
+        const pinEnd = pinStart + spacer.offsetHeight;
+
+        const y = window.scrollY + navH;
+        const denom = (pinEnd - pinStart) || 1;
+        const t = clamp((y - pinStart) / denom, 0, 1);
+
+        const x = t * (panels - 1) * window.innerWidth;
+        track.style.transform = `translateX(-${x}px)`;
+      };
+
+      if (hscrollSection && track && spacer) {
+        setSpacerHeight();
+        updateHScroll();
+        window.addEventListener("scroll", updateHScroll, { passive: true });
+        window.addEventListener("resize", () => { setSpacerHeight(); updateHScroll(); });
+      }
+
+      /* =========================
+        Chapter 05 Scrolled Video
+      ========================== */
+      const svVideo = $("#sv-video");
+      const svSource = $("#sv-source");
+      const svLines = $$(".js-sv-line");
+
+      const setActiveLine = (activeEl) => svLines.forEach(l => l.classList.toggle("is-active", l === activeEl));
+
+      const swapVideoSrcIfNeeded = (src, poster) => {
+        if (!svVideo || !svSource) return;
+        const cur = svSource.getAttribute("src");
+        if (src && src !== cur) {
+          svVideo.pause();
+          svSource.setAttribute("src", src);
+          if (poster) svVideo.poster = poster;
+          svVideo.load();
+        } else if (poster) {
+          svVideo.poster = poster;
+        }
+      };
+
+      if (svVideo && svLines.length && "IntersectionObserver" in window) {
+        const obs5 = new IntersectionObserver((entries) => {
+          const candidates = entries.filter(e => e.isIntersecting);
+          if (!candidates.length) return;
+          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio);
+          const top = candidates[0].target;
+
+          setActiveLine(top);
+
+          const src = top.dataset.src;
+          const poster = top.dataset.poster;
+          const t = parseFloat(top.dataset.time || "0");
+
+          swapVideoSrcIfNeeded(src, poster);
+
+          if (Number.isFinite(t)) {
+            const jump = () => {
+              if (Math.abs(svVideo.currentTime - t) > 0.45) svVideo.currentTime = t;
+              const p = svVideo.play();
+              if (p && typeof p.then === "function") p.catch(() => {});
+            };
+            if (svSource.getAttribute("src") !== src) setTimeout(jump, 80);
+            else jump();
+          }
+        }, { threshold: [0.55, 0.7, 0.82] });
+
+        svLines.forEach(l => obs5.observe(l));
+      }
+
+      /* =========================
+        Modal
+      ========================== */
+      const backdrop = $("#modal-backdrop");
+      const btnClose = $("#modal-close");
+      const elTitle = $("#modal-title");
+      const elSubtitle = $("#modal-subtitle");
+      const elBody = $("#modal-body");
+      const elMedia = $("#modal-media");
+      const elCaption = $("#modal-caption");
+      let lastFocus = null;
+
+      const escapeHtml = (str) => String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+      const openModalFrom = (host) => {
+        if (!backdrop) return;
+        lastFocus = document.activeElement;
+
+        const title = host.dataset.title || "";
+        const subtitle = host.dataset.subtitle || "";
+        const body = host.dataset.body || "";
+        const mediaType = host.dataset.mediaType || "";
+        const mediaSrc = host.dataset.mediaSrc || "";
+        const mediaPoster = host.dataset.mediaPoster || "";
+        const mediaCaption = host.dataset.mediaCaption || "";
+
+        if (elTitle) elTitle.textContent = title;
+        if (elSubtitle) elSubtitle.textContent = subtitle;
+        if (elBody) elBody.innerHTML = `<p>${escapeHtml(body).replace(/\n/g, "<br>")}</p>`;
+
+        if (elMedia) elMedia.innerHTML = "";
+        if (elCaption) elCaption.textContent = mediaCaption;
+
+        if (elMedia && mediaType === "video" && mediaSrc) {
+          const v = document.createElement("video");
+          v.controls = true;
+          v.playsInline = true;
+          v.preload = "metadata";
+          if (mediaPoster) v.poster = mediaPoster;
+          const s = document.createElement("source");
+          s.src = mediaSrc;
+          s.type = "video/mp4";
+          v.appendChild(s);
+          elMedia.appendChild(v);
+        } else if (elMedia && mediaType === "img" && mediaSrc) {
+          const img = document.createElement("img");
+          img.src = mediaSrc;
+          img.alt = `${title} 相關圖片`;
+          img.loading = "lazy";
+          img.decoding = "async";
+          elMedia.appendChild(img);
+        }
+
+        backdrop.classList.add("open");
+        backdrop.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        btnClose?.focus();
+      };
+
+      const closeModal = () => {
+        if (!backdrop) return;
+        backdrop.classList.remove("open");
+        backdrop.setAttribute("aria-hidden", "true");
+        if (elMedia) elMedia.innerHTML = "";
+        if (elBody) elBody.innerHTML = "";
+        if (elCaption) elCaption.textContent = "";
+        document.body.style.overflow = "";
+        if (lastFocus) lastFocus.focus();
+      };
+
+      $$(".js-open-modal").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const panel = e.target.closest(".panel");
+          if (panel) openModalFrom(panel);
+        });
+      });
+
+      btnClose?.addEventListener("click", closeModal);
+      backdrop?.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && backdrop?.classList.contains("open")) closeModal();
+      });
+    });
+  </script>
 </body>
 </html>
