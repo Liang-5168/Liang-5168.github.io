@@ -550,7 +550,7 @@
             width:600vw; /* 6 panels */
             transform:translateX(0px);
             will-change:transform;
-            /* 移除 transition，讓 JS requestAnimationFrame 控制平滑度 */
+            /* 移除 CSS 過渡，讓 JS requestAnimationFrame 控制平滑度 */
             /* transition:transform 0.06s linear; */ 
         }
         .panel{
@@ -1297,7 +1297,7 @@
             }
 
             /* =========================
-               Chapter 04 Horizontal scroll: 修正與優化
+               Chapter 04 Horizontal scroll: 最終修正 (使用 getBoundingClientRect)
                ========================== */
             const hscrollSection = $("#chapter-elements");
             const track = $("#hscroll-track");
@@ -1314,7 +1314,7 @@
             const setSpacerHeight = () => {
                 if (!spacer || panels < 2) return;
                 const vh = window.innerHeight;
-                // 滾動長度 = (面板數量 - 1) * 視窗高度 + 額外捲動緩衝 (例如 70vh)
+                // 計算總長度：(面板數量 - 1) * 視窗高度 + 額外捲動緩衝 (70vh)
                 const scrollLength = (panels - 1) * vh + Math.round(vh * 0.70);
                 spacer.style.height = `${scrollLength}px`; 
             };
@@ -1326,17 +1326,20 @@
                 if (!hscrollSection || !track || panels < 2) return 0;
                 
                 const navH = getNavH();
-                const sectionTop = hscrollSection.offsetTop; 
+                
+                // 修正 2: 使用 getBoundingClientRect 計算精確的 Pin Start 位置
+                const rect = hscrollSection.getBoundingClientRect();
                 const headH = head ? head.offsetHeight : 0;
-                const pin = hscrollSection.querySelector(".hscroll-pin");
-
-                if (!pin || !spacer) return 0;
-
-                const pinStart = sectionTop + headH;
+                
+                // Pin 開始滾動的位置 (當 Section 頂部捲到導航欄下方時開始)
+                // PinStart = Section 頂部 + 當前滾動位置 + Head 的高度
+                const pinStart = rect.top + window.scrollY + headH; 
+                
+                // Pin 結束滾動的位置 = PinStart + Spacer 的總高度
                 const pinEnd = pinStart + spacer.offsetHeight;
 
-                // 計算滾動進度 (0 到 1)
-                const y = lastScrollY + navH;
+                // t = 滾動進度 (0.0 到 1.0)
+                const y = window.scrollY + navH;
                 const denom = (pinEnd - pinStart) || 1;
                 const t = clamp((y - pinStart) / denom, 0, 1);
 
@@ -1356,7 +1359,7 @@
                 lastScrollY = window.scrollY; 
             };
 
-            // 修正 2: 確保在所有 resize 和 load 事件後，重新計算 Spacer 高度
+            // 修正 3: 確保在所有 resize 和 load 事件後，重新計算 Spacer 高度
             const initializeHScroll = () => {
                 if (hscrollSection && track && spacer && panels >= 2) {
                     setSpacerHeight();
@@ -1370,8 +1373,8 @@
 
             // 監聽事件
             window.addEventListener("scroll", onScrollHScroll, { passive: true });
-            window.addEventListener("resize", initializeHScroll); // resize 時重新計算高度
-            window.addEventListener('load', initializeHScroll);  // 確保所有媒體載入後計算最終高度
+            window.addEventListener("resize", initializeHScroll); 
+            window.addEventListener('load', initializeHScroll);  
             initializeHScroll(); // 首次執行
 
             /* =========================
