@@ -658,6 +658,43 @@
     }
 
     /* =========================
+      Photo Figures (Evidence chain)
+    ========================== */
+    .figure-block{
+      margin:2.2rem 0;
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(0,0,0,0.22);
+      box-shadow:0 22px 60px rgba(0,0,0,0.45);
+    }
+    .figure-block button{
+      all:unset;
+      display:block;
+      cursor:zoom-in;
+    }
+    .figure-block img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+    .figcap{
+      padding:0.95rem 1.05rem 1.05rem;
+      color:rgba(255,255,255,0.72);
+      font-size:0.98rem;
+      line-height:1.75;
+      border-top:1px solid rgba(255,255,255,0.10);
+    }
+    .figcap b{ color:rgba(255,255,255,0.92); font-weight:700; }
+
+    .figure-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1rem;
+      margin:2.2rem 0;
+    }
+
+    /* =========================
       Reduced Motion
     ========================== */
     @media (prefers-reduced-motion: reduce){
@@ -690,6 +727,7 @@
       .panel .panel-media img, .panel .panel-media video{
         height:40vh;
       }
+      .figure-grid{ grid-template-columns:1fr; }
     }
     @media (max-width: 768px){
       .hero{padding:4vh 8vw;}
@@ -749,19 +787,11 @@
   </nav>
 
   <!-- =========================
-    Chapter 01｜Hook (全換：Sticky + Spotlight compare)
+    Chapter 01｜Hook (Sticky + Spotlight compare)
   ========================== -->
   <section class="chapter sticky-section" id="chapter-hook" aria-label="章節一：紅包場與刻板印象">
     <div class="sticky-wrap">
       <div class="sticky-media" aria-hidden="true">
-        <!-- 請放你們對應的比較畫面（可同一張也行）：
-             assets/compare/redpacket.jpg
-             assets/compare/beef.jpg
-             assets/compare/dancehall.jpg
-             assets/compare/karaoke.jpg
-             assets/compare/livehouse.jpg
-             assets/compare/banquet.jpg
-        -->
         <img id="compare-media" src="assets/compare/redpacket.jpg" alt="">
       </div>
 
@@ -807,12 +837,11 @@
   </section>
 
   <!-- =========================
-    Chapter 02｜紅包：不是交易，是關係（全換：Sticky media + scrolled narrative）
+    Chapter 02｜紅包：不是交易，是關係（Sticky media + scrolled narrative）
   ========================== -->
   <section class="chapter sticky-section" id="chapter-redpacket" aria-label="章節二：紅包的意義">
     <div class="sticky-wrap">
       <div class="sticky-media">
-        <!-- 這裡建議放「可循環」短影片或一張代表性圖片 -->
         <video id="redpacket-loop" muted loop playsinline preload="metadata" poster="assets/poster/c0621.jpg">
           <source src="assets/video/c0621.mp4" type="video/mp4" />
         </video>
@@ -845,6 +874,37 @@
           <div class="text">桌上茶水、水果盤與餐飲以「茶單制」進行；歌星承擔所屬桌位的飲食消費，賓客再以紅包回饋捧場。</div>
         </div>
 
+        <!-- Evidence photos (new) -->
+        <div class="figure-grid reveal">
+          <figure class="figure-block">
+            <button type="button" class="js-open-figure"
+              data-title="桌面日常"
+              data-subtitle="CHAPTER 02 / EVIDENCE"
+              data-body="桌上的茶水、杯盤與座位距離，讓『聽歌』更像一種陪伴，而不是消費刺激。"
+              data-media-type="img"
+              data-media-src="assets/photo/DSC04754.jpg"
+              data-media-caption="桌上的茶水、杯盤與座位距離，構成紅包場的生活尺度。">
+              <img src="assets/photo/DSC04754.jpg" alt="觀眾席桌面與聽歌的側影"
+                loading="lazy" decoding="async" width="2048" height="1365">
+            </button>
+            <figcaption class="figcap"><b>桌面日常</b>｜茶水、杯盤與近距離座位，構成紅包場的生活尺度。</figcaption>
+          </figure>
+
+          <figure class="figure-block">
+            <button type="button" class="js-open-figure"
+              data-title="凝視舞台的人"
+              data-subtitle="CHAPTER 02 / EVIDENCE"
+              data-body="不是喧鬧，而是專注。觀眾的『看』本身就是互動的一部分。"
+              data-media-type="img"
+              data-media-src="assets/photo/DSC09448.jpg"
+              data-media-caption="不是喧鬧，而是專注。觀眾的『看』本身就是互動的一部分。">
+              <img src="assets/photo/DSC09448.jpg" alt="觀眾在場內凝視舞台的神情"
+                loading="lazy" decoding="async" width="2048" height="1365">
+            </button>
+            <figcaption class="figcap"><b>凝視舞台的人</b>｜現場互動不只在紅包交付，也在每一次認真聽歌的眼神裡。</figcaption>
+          </figure>
+        </div>
+
         <div class="sticky-step reveal js-sticky-step-2"
           data-media="assets/img/assistant.jpg"
           data-kind="img">
@@ -859,7 +919,7 @@
   </section>
 
   <!-- =========================
-    Chapter 03｜仍在運作的秩序（全換：scroll-lit）
+    Chapter 03｜仍在運作的秩序（scroll-lit）
   ========================== -->
   <section class="chapter" id="chapter-order" aria-label="章節三：仍在運作的秩序">
     <div class="chapter-inner">
@@ -872,6 +932,51 @@
         <p class="js-order-line">這種不自在，並非來自危險或衝突，而是來自——<strong>不知道自己該如何被放進這個空間</strong>。</p>
       </div>
 
+      <!-- Evidence photos (new) -->
+      <figure class="figure-block reveal">
+        <button type="button" class="js-open-figure"
+          data-title="擁抱"
+          data-subtitle="CHAPTER 03 / EVIDENCE"
+          data-body="它更像是熟客關係裡的問候：靠近、打招呼、確認彼此仍在。"
+          data-media-type="img"
+          data-media-src="assets/photo/DSC09319.jpg"
+          data-media-caption="它更像是熟客關係裡的問候：靠近、打招呼、確認彼此仍在。">
+          <img src="assets/photo/DSC09319.jpg" alt="觀眾與表演者在場內互動擁抱"
+            loading="lazy" decoding="async" width="2048" height="1365">
+        </button>
+        <figcaption class="figcap"><b>擁抱</b>｜『關係』不是抽象詞，而是會在現場以肢體與語氣具體發生。</figcaption>
+      </figure>
+
+      <div class="figure-grid reveal">
+        <figure class="figure-block">
+          <button type="button" class="js-open-figure"
+            data-title="紅包交付"
+            data-subtitle="CHAPTER 03 / EVIDENCE"
+            data-body="紅包在此刻被看見：它是對表演的回應，而非對身體的購買。"
+            data-media-type="img"
+            data-media-src="assets/photo/DSC04900.jpg"
+            data-media-caption="紅包在此刻被看見：它是對表演的回應，而非對身體的購買。">
+            <img src="assets/photo/DSC04900.jpg" alt="舞台上歌手與台下觀眾交付紅包的瞬間"
+              loading="lazy" decoding="async" width="2048" height="1365">
+          </button>
+          <figcaption class="figcap"><b>紅包交付</b>｜最常被誤解的一幕，往往也最能證明它的真正意義。</figcaption>
+        </figure>
+
+        <figure class="figure-block">
+          <button type="button" class="js-open-figure"
+            data-title="舞台與視線"
+            data-subtitle="CHAPTER 03 / EVIDENCE"
+            data-body="舞台不高、距離很近；因此『怎麼在場』會成為新來者最先遇到的課題。"
+            data-media-type="img"
+            data-media-src="assets/photo/DSC09375.jpg"
+            data-media-caption="舞台不高、距離很近；因此『怎麼在場』會成為新來者最先遇到的課題。">
+            <img src="assets/photo/DSC09375.jpg" alt="歌手在舞台演唱與觀眾席的距離"
+              loading="lazy" decoding="async" width="2048" height="1365">
+          </button>
+          <figcaption class="figcap"><b>舞台與視線</b>｜舞台與觀眾席幾乎無縫接壤，現場秩序靠默契而非圍欄。</figcaption>
+        </figure>
+      </div>
+
       <div class="hr reveal"></div>
 
       <p class="reveal js-order-line">在現場，新面孔很少被直接問「覺得好不好」。更常出現的，是另一個問題：<strong>「怎麼會來這裡？」</strong></p>
@@ -880,7 +985,7 @@
   </section>
 
   <!-- =========================
-    Chapter 04｜六大元素（全換：Horizontal scroll 展覽 + 點擊展開 Modal）
+    Chapter 04｜六大元素（Horizontal scroll + Modal）
   ========================== -->
   <section class="chapter hscroll" id="chapter-elements" aria-label="章節四：六大元素">
     <div class="hscroll-head">
@@ -1017,12 +1122,11 @@
       </div>
     </div>
 
-    <!-- 讓橫向滾動有足夠捲動距離 -->
     <div class="hscroll-spacer" aria-hidden="true"></div>
   </section>
 
   <!-- =========================
-    Chapter 05｜訪談（全換：Scrolled Video / 文字控時間碼）
+    Chapter 05｜訪談（Scrolled Video）
   ========================== -->
   <section class="chapter" id="chapter-interviews" aria-label="章節五：訪談精華">
     <div class="chapter-inner">
@@ -1039,7 +1143,6 @@
         </div>
 
         <div class="sv-lines">
-          <!-- 你要做的唯一事情：把 data-time 換成你們確定的時間碼 -->
           <div class="sv-line reveal js-sv-line is-active" data-time="0">
             <div class="quoteText">「臺上臺下，我是不一樣的人。」</div>
             <div class="who">— 楊雅喬（請填：C0662 的時間碼）</div>
@@ -1212,8 +1315,6 @@
         const p = scrollH > 0 ? (scrollTop / scrollH) * 100 : 0;
         progressFill.style.width = `${Math.min(100, Math.max(0, p))}%`;
       };
-      window.addEventListener("scroll", updateProgress, { passive: true });
-      updateProgress();
 
       /* =========================
         Chapter 01 Sticky Compare (Spotlight)
@@ -1262,11 +1363,9 @@
 
           setActiveStep(steps2, top);
 
-          // Optional: swap poster image to hint context
           const kind = top.dataset.kind || "";
           const media = top.dataset.media || "";
           if (loopVideo && media) {
-            // only update poster gently; don't reload video source
             if (kind === "img" || kind === "poster") loopVideo.poster = media;
           }
         }, { threshold: [0.35, 0.5, 0.65, 0.8] });
@@ -1303,14 +1402,10 @@
         if (!hscroll || !track || panels <= 1) return;
 
         const rect = hscroll.getBoundingClientRect();
-        const navOffset = 92; // align with sticky tops
+        const navOffset = 92;
         const viewportH = window.innerHeight;
 
-        // start when pin section hits top; end when spacer ends
-        const totalScroll = (panels - 1) * viewportH; // horizontal distance normalized
         const sectionTop = rect.top + window.scrollY;
-
-        // Find scroll position relative to pin area:
         const pinStart = sectionTop + (hscroll.querySelector(".hscroll-head")?.offsetHeight || 0);
         const pinEnd = pinStart + (document.querySelector(".hscroll-spacer")?.offsetHeight || 0);
 
@@ -1321,9 +1416,7 @@
         track.style.transform = `translateX(-${x}px)`;
       };
 
-      window.addEventListener("scroll", updateHScroll, { passive: true });
       window.addEventListener("resize", updateHScroll);
-      updateHScroll();
 
       /* =========================
         Chapter 05 Scrolled Video (text controls time)
@@ -1346,7 +1439,6 @@
 
           const t = parseFloat(top.dataset.time || "0");
           if (Number.isFinite(t)) {
-            // avoid micro-jitters
             if (Math.abs(svVideo.currentTime - t) > 0.45) svVideo.currentTime = t;
             const p = svVideo.play();
             if (p && typeof p.then === "function") p.catch(() => {});
@@ -1357,7 +1449,7 @@
       }
 
       /* =========================
-        Modal for panels (保留你原本的深度展開)
+        Modal for panels + figures
       ========================== */
       const backdrop = document.getElementById("modal-backdrop");
       const btnClose = document.getElementById("modal-close");
@@ -1390,7 +1482,9 @@
 
         elTitle.textContent = title;
         elSubtitle.textContent = subtitle;
-        elBody.innerHTML = `<p>${escapeHtml(body).replace(/\n/g, "<br>")}</p>`;
+        elBody.innerHTML = body
+          ? `<p>${escapeHtml(body).replace(/\n/g, "<br>")}</p>`
+          : "";
 
         elMedia.innerHTML = "";
         elCaption.textContent = mediaCaption;
@@ -1439,11 +1533,34 @@
         });
       });
 
+      document.querySelectorAll(".js-open-figure").forEach((btn) => {
+        btn.addEventListener("click", () => openModalFrom(btn));
+      });
+
       btnClose.addEventListener("click", closeModal);
       backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && backdrop.classList.contains("open")) closeModal();
       });
+
+      /* =========================
+        Scroll (rAF throttle): progress + horizontal
+      ========================== */
+      let rafLock = false;
+      const onScrollRaf = () => {
+        if (rafLock) return;
+        rafLock = true;
+        requestAnimationFrame(() => {
+          updateProgress();
+          updateHScroll();
+          rafLock = false;
+        });
+      };
+      window.addEventListener("scroll", onScrollRaf, { passive: true });
+
+      // init
+      updateProgress();
+      updateHScroll();
 
       // Smooth scroll
       document.documentElement.style.scrollBehavior = "smooth";
