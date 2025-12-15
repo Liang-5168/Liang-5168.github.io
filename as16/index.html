@@ -11,6 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&display=swap" rel="stylesheet" />
 
   <style>
+    /* =================================
+      樣式區塊：已整合 CSS，恢復紅色、字體及佈局
+    ================================= */
     :root{
       --red:#970C10;
       --gold:#FFE87A;
@@ -43,7 +46,7 @@
       border-radius:10px;
     }
 
-    /* Skip link (可訪問性) */
+    /* Skip link */
     .skip-link{
       position:absolute;
       left:-999px;
@@ -328,12 +331,12 @@
     /* =========================
       Chapters Base
     ========================== */
-    main{display:block;} /* 來自第二組：確保 main 標籤行為正常 */
+    main{display:block;}
     .chapter{
       background:#000;
       padding:14vh 8vw;
       position:relative;
-      isolation:isolate; /* 來自第一組：避免 ::before/::after 穿透 */
+      isolation:isolate;
     }
     .chapter-inner{max-width:980px;margin:0 auto;}
     .kicker{
@@ -382,7 +385,7 @@
     .sticky-section{
       background:var(--red);
       padding:0;
-      overflow:hidden; /* 來自第一組 */
+      overflow:hidden;
     }
     .sticky-section::before{
       content:"";
@@ -395,7 +398,7 @@
     }
     .sticky-wrap{
       position:relative;
-      z-index:1; /* 來自第一組 */
+      z-index:1;
       display:grid;
       grid-template-columns: 1.05fr 0.95fr;
       gap:min(5vw,60px);
@@ -404,7 +407,7 @@
     }
     .sticky-media{
       position:sticky;
-      top:calc(var(--navH) + 8px); /* 使用變數 */
+      top:calc(var(--navH) + 8px);
       border-radius:22px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,0.14);
@@ -422,7 +425,7 @@
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(to bottom, rgba(0,0,0,0.14), rgba(0,0,0,0.38)); /* 採用第一組較深的漸層 */
+      background:linear-gradient(to bottom, rgba(0,0,0,0.14), rgba(0,0,0,0.38));
       pointer-events:none;
       z-index:2;
     }
@@ -1389,7 +1392,7 @@
         const obs5 = new IntersectionObserver((entries) => {
           const candidates = entries.filter(e => e.isIntersecting);
           if (!candidates.length) return;
-          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio);
+          candidates.sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
           const top = candidates[0].target;
 
           setActiveLine(top);
@@ -1470,7 +1473,7 @@
           img.src = mediaSrc;
           img.alt = `${title} 相關圖片`;
           img.loading = "lazy";
-          img.decoding = "async"; // 來自第二組的優化
+          img.decoding = "async";
           elMedia.appendChild(img);
         }
 
