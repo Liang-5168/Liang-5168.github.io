@@ -529,7 +529,7 @@
     .hscroll-track{
       height:100%;
       display:flex;
-      width:600vw; /* JS 會自動改成 panels*100vw */
+      width:600vw;
       transform:translateX(0px);
       will-change:transform;
     }
@@ -607,7 +607,7 @@
       background:rgba(0,0,0,0.26);
     }
     .hscroll-spacer{
-      height:520vh; /* JS 會根據 panels 自動微調 */
+      height:520vh;
       background:var(--red);
       position:relative;
       z-index:1;
@@ -770,23 +770,15 @@
   <a class="skip-link" href="#main">跳到正文</a>
   <div class="fog-layer" aria-hidden="true"></div>
 
-  <!-- Section 1: Landing Video -->
+  <!-- Section 1 -->
   <section class="landing-video" aria-label="開場舞台影片">
-    <video
-      id="landing-video"
-      src="video/stage.mp4"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-    ></video>
+    <video id="landing-video" src="video/stage.mp4" autoplay muted loop playsinline preload="auto"></video>
   </section>
 
-  <!-- Section 2: Buffer -->
+  <!-- Section 2 -->
   <section class="buffer grainy" aria-hidden="true"></section>
 
-  <!-- Section 3: Hero -->
+  <!-- Section 3 -->
   <section class="hero grainy" aria-label="專題標題">
     <div class="hero-content">
       <h1 id="hero-title" class="typewriter-line hero-entrance" data-text="唱給不在場的人" style="--delay:0ms;"></h1>
@@ -794,18 +786,12 @@
       <h3 id="hero-author" class="hero-author hero-entrance" style="--delay:300ms;">梁朝勛、彭賀琳、莊馨予</h3>
     </div>
     <div class="hero-image hero-entrance" style="--delay:0ms;">
-      <img
-        src="photo/yang-yaqiao.jpg"
-        alt="紅包場歌手楊雅喬"
-        decoding="async"
-        loading="eager"
-        fetchpriority="high"
-      />
+      <img src="photo/yang-yaqiao.jpg" alt="紅包場歌手楊雅喬" decoding="async" loading="eager" fetchpriority="high" />
     </div>
     <div id="scroll-hint" class="scroll-hint">SCROLL ↓</div>
   </section>
 
-  <!-- Mini Nav -->
+  <!-- Nav -->
   <nav class="mini-nav" aria-label="章節導覽">
     <div class="mini-nav-inner" role="navigation">
       <a href="#chapter-hook" data-section="chapter-hook">01 HOOK</a>
@@ -822,13 +808,7 @@
     <section class="chapter sticky-section grainy" id="chapter-hook" aria-label="章節一：紅包場與刻板印象">
       <div class="sticky-wrap">
         <div class="sticky-media" aria-hidden="true">
-          <img
-            id="compare-media"
-            src="photo/DSC04754.jpg"
-            alt="紅包場內景"
-            loading="eager"
-            decoding="async"
-          />
+          <img id="compare-media" src="photo/DSC04754.jpg" alt="紅包場內景" loading="eager" decoding="async" />
         </div>
 
         <div class="sticky-text">
@@ -836,27 +816,28 @@
           <h2 class="reveal">紅包場，和你想的不一樣</h2>
           <p class="lead reveal">把它誤會成「某種刺激消費」很容易；但真正的樣貌，往往只在你坐下來之後，才慢慢浮現。</p>
 
-          <div class="sticky-step reveal js-sticky-step is-active" data-kind="img" data-media="photo/DSC04754.jpg">
+          <!-- 這裡保留你原本「只用 data-media」的寫法；JS 會兼容 data-kind 可選 -->
+          <div class="sticky-step reveal js-sticky-step is-active" data-media="photo/DSC04754.jpg" data-kind="img">
             <span class="label">COMPARE 01</span>
             <div class="text">它常被拿來和 <span class="tip" data-tip="紅包場不以「清涼」或「火辣」為賣點">牛肉場</span>混為一談，但紅包場的核心是「聽歌」：觀眾把注意力給表演，歌手把完整的演出給舞台。</div>
           </div>
 
-          <div class="sticky-step reveal js-sticky-step" data-kind="img" data-media="photo/singer.jpg">
+          <div class="sticky-step reveal js-sticky-step" data-media="photo/singer.jpg" data-kind="img">
             <span class="label">COMPARE 02</span>
             <div class="text">它也不等同 <span class="tip" data-tip="紅包場是老少宜的場所">舞廳</span>。紅包場裡，主角始終在台上，秩序與默契反而更像一套「固定座位的劇場」。</div>
           </div>
 
-          <div class="sticky-step reveal js-sticky-step" data-kind="img" data-media="photo/DSC04900.jpg">
+          <div class="sticky-step reveal js-sticky-step" data-media="photo/DSC04900.jpg" data-kind="img">
             <span class="label">COMPARE 03</span>
             <div class="text">你可以把它和 <span class="tip" data-tip="紅包場觀眾不會上台唱歌">卡拉OK</span>區分開來：紅包場觀眾多半不登台，點歌、聽歌、聊天，維持的是「台上台下」的距離。</div>
           </div>
 
-          <div class="sticky-step reveal js-sticky-step" data-kind="img" data-media="photo/DSC09319.jpg">
+          <div class="sticky-step reveal js-sticky-step" data-media="photo/DSC09319.jpg" data-kind="img">
             <span class="label">COMPARE 04</span>
             <div class="text">它也不同於 <span class="tip" data-tip="紅包場歌手需要穿著「禮服」上台">Livehouse</span>。紅包場的舞台更像「秀場」：禮服、燈光、稱號、流程，構成一種職業規範。</div>
           </div>
 
-          <div class="sticky-step reveal js-sticky-step" data-kind="img" data-media="photo/DSC09375.jpg">
+          <div class="sticky-step reveal js-sticky-step" data-media="photo/DSC09375.jpg" data-kind="img">
             <span class="label">COMPARE 05</span>
             <div class="text">更別說 <span class="tip" data-tip="紅包場的觀眾是特地來聽歌的">流水席</span>：紅包場的觀眾是為了歌而來，餐飲只是把時間留在現場的方式。</div>
           </div>
@@ -867,7 +848,8 @@
     <!-- Chapter 02 -->
     <section class="chapter sticky-section grainy" id="chapter-redpacket" aria-label="章節二：紅包的意義">
       <div class="sticky-wrap">
-        <div class="sticky-media">
+        <!-- 注意：這個容器 JS 會在「img ↔ video」之間替換 -->
+        <div class="sticky-media" id="chapter2-media">
           <video id="redpacket-loop" muted loop playsinline preload="metadata" poster="photo/DSC09375.jpg">
             <source src="video/c0621.mp4" type="video/mp4" />
           </video>
@@ -876,25 +858,24 @@
         <div class="sticky-text">
           <div class="kicker reveal">CHAPTER 02</div>
           <h2 class="reveal">紅包的意義：支持表演，而不是購買身體</h2>
-
           <p class="lead reveal">把「紅包」理解成交易，很快；但在現場，它更像一種回應：喜歡、尊重、面子、人情，最後都落在一個小小的信封裡。</p>
 
-          <div class="sticky-step reveal js-sticky-step-2 is-active" data-kind="img" data-media="photo/DSC04754.jpg">
+          <div class="sticky-step reveal js-sticky-step-2 is-active" data-media="photo/DSC04754.jpg" data-kind="img">
             <span class="label">POINT 01</span>
             <div class="text">紅包場是歌手、表演者與觀眾最直接互動的地方。觀眾用紅包表達喜歡，歌手用表演回應掌聲。</div>
           </div>
 
-          <div class="sticky-step reveal js-sticky-step-2" data-kind="img" data-media="photo/redpacket.jpg">
+          <div class="sticky-step reveal js-sticky-step-2" data-media="photo/redpacket.jpg" data-kind="img">
             <span class="label">POINT 02</span>
             <div class="text">紅包不是對身體的購買，而是對「表演」的支持；觀眾來聽歌、點歌、聊天，建立的是長時間的人情關係。</div>
           </div>
 
-          <div class="sticky-step reveal js-sticky-step-2" data-kind="img" data-media="photo/DSC09375.jpg">
+          <div class="sticky-step reveal js-sticky-step-2" data-media="photo/DSC09375.jpg" data-kind="img">
             <span class="label">POINT 03</span>
             <div class="text">紅包場的文化內涵，來自「茶單」制度：歌星承擔賓客的飲食消費，賓客則包高出消費金額的紅包交給所捧場的歌星。</div>
           </div>
 
-          <div class="sticky-step reveal js-sticky-step-2" data-kind="img" data-media="photo/assistant.jpg">
+          <div class="sticky-step reveal js-sticky-step-2" data-media="photo/assistant.jpg" data-kind="img">
             <span class="label">POINT 04</span>
             <div class="text">多出來的金額成為鼓勵，也讓「紅包」成為關係的可見形式：不是一次性的刺激消費，而是累積的信任與照顧。</div>
           </div>
@@ -932,14 +913,14 @@
 
       <div class="hscroll-pin" aria-hidden="false">
         <div class="hscroll-track" id="hscroll-track">
-          <!-- 01 歌星 -->
+          <!-- 01 -->
           <section class="panel"
             data-title="歌星"
             data-subtitle="THE SINGER"
-            data-body="歌星輪番登台，每人2-3首歌曲的時間，跑馬燈穿過個人稱號。禮服、燈光、流程，是職業規範，也是身段。紅包場曾捧紅無數在地舞台與電視螢幕的名字，而在今天，歌星仍用唱功與時間換取掌聲與信任。"
+            data-body="（把你的長文放這裡）"
             data-media-type="img"
             data-media-src="photo/singer.jpg"
-            data-media-caption="舞台上的歌星（photo/singer.jpg）">
+            data-media-caption="舞台上的歌星 (photo/singer.jpg)">
             <div>
               <h3>歌星</h3>
               <div class="tagline">THE SINGER</div>
@@ -951,18 +932,18 @@
             </div>
           </section>
 
-          <!-- 02 樂團老師 -->
+          <!-- 02 -->
           <section class="panel"
             data-title="樂團老師"
             data-subtitle="THE BAND"
-            data-body="樂團老師把每一段過門與節拍撐住：跟著歌星的key、跟著現場的呼吸，讓一場秀不只是歌，而是一套完整的演出。你看見的是台上，聽見的是多年默契。"
+            data-body="（把你的長文放這裡）"
             data-media-type="img"
             data-media-src="photo/DSC04900.jpg"
-            data-media-caption="樂隊與舞台的距離（photo/DSC04900.jpg）">
+            data-media-caption="樂團與舞台 (photo/DSC04900.jpg)">
             <div>
               <h3>樂團老師</h3>
               <div class="tagline">THE BAND</div>
-              <div class="desc">一首歌的穩，是很多晚上的熟練。台上不說話，但每個音都在指揮秩序。</div>
+              <div class="desc">一首歌的穩，是很多晚上的默契；看不見的，是把演出撐住的節拍。</div>
               <button class="cta js-open-modal" type="button">＋ 展開更多</button>
             </div>
             <div class="panel-media">
@@ -970,18 +951,18 @@
             </div>
           </section>
 
-          <!-- 03 小妹 -->
+          <!-- 03 -->
           <section class="panel"
             data-title="小妹"
             data-subtitle="THE RUNNER"
-            data-body="小妹在場內穿梭：送茶水、加冰塊、確認每桌狀態，處理那些不會被寫在節目單上的細節。對外人來說是服務；對場內的人來說，是讓一切不出錯的節點。"
+            data-body="（把你的長文放這裡）"
             data-media-type="img"
             data-media-src="photo/assistant.jpg"
-            data-media-caption="穿梭在桌與桌之間（photo/assistant.jpg）">
+            data-media-caption="場內動線 (photo/assistant.jpg)">
             <div>
               <h3>小妹</h3>
               <div class="tagline">THE RUNNER</div>
-              <div class="desc">走動、記住、補位。她不是配角，而是現場能不能順的關鍵。</div>
+              <div class="desc">穿梭、記住、補位。她不是配角，而是現場能不能順的關鍵。</div>
               <button class="cta js-open-modal" type="button">＋ 展開更多</button>
             </div>
             <div class="panel-media">
@@ -989,16 +970,16 @@
             </div>
           </section>
 
-          <!-- 04 老闆 / 場域 -->
+          <!-- 04 -->
           <section class="panel"
-            data-title="場域與老闆"
+            data-title="場域"
             data-subtitle="THE HOUSE"
-            data-body="燈光怎麼亮、哪一桌坐誰、什麼時候該上菜、該不該提醒——場域本身像一台老機器，靠人維修、靠經驗運轉。老闆與幹部的角色，是把規則留在空氣裡。"
+            data-body="（把你的長文放這裡）"
             data-media-type="img"
             data-media-src="photo/DSC09319.jpg"
-            data-media-caption="舞台、桌席與距離（photo/DSC09319.jpg）">
+            data-media-caption="桌席與舞台距離 (photo/DSC09319.jpg)">
             <div>
-              <h3>場域與老闆</h3>
+              <h3>場域</h3>
               <div class="tagline">THE HOUSE</div>
               <div class="desc">你以為是「地方」，其實是一套制度：誰能靠近舞台、誰該被保護。</div>
               <button class="cta js-open-modal" type="button">＋ 展開更多</button>
@@ -1008,14 +989,14 @@
             </div>
           </section>
 
-          <!-- 05 茶單 -->
+          <!-- 05 -->
           <section class="panel"
             data-title="茶單"
             data-subtitle="THE TAB"
-            data-body="茶單不只是點餐。它把消費與人情綁在一起：歌星承擔桌上的飲食，觀眾用紅包回敬。制度讓關係可被計算，也讓關係不只是錢——它被解讀成尊重、面子、回應。"
+            data-body="（把你的長文放這裡）"
             data-media-type="img"
             data-media-src="photo/redpacket.jpg"
-            data-media-caption="紅包與茶單的象徵（photo/redpacket.jpg）">
+            data-media-caption="紅包與茶單象徵 (photo/redpacket.jpg)">
             <div>
               <h3>茶單</h3>
               <div class="tagline">THE TAB</div>
@@ -1027,14 +1008,14 @@
             </div>
           </section>
 
-          <!-- 06 觀眾 -->
+          <!-- 06 -->
           <section class="panel"
             data-title="觀眾"
             data-subtitle="THE REGULARS"
-            data-body="觀眾不是一群陌生人。有人是老主顧，有人是路過坐下的人；有人為了一首歌回來很多次。對歌星而言，觀眾是一段段被記住的關係：點歌、問候、照顧，和偶爾的沉默。"
+            data-body="（把你的長文放這裡）"
             data-media-type="img"
             data-media-src="photo/DSC09375.jpg"
-            data-media-caption="桌席、眼神與停留（photo/DSC09375.jpg）">
+            data-media-caption="桌席氛圍 (photo/DSC09375.jpg)">
             <div>
               <h3>觀眾</h3>
               <div class="tagline">THE REGULARS</div>
@@ -1056,7 +1037,7 @@
       <div class="chapter-inner">
         <div class="kicker reveal">CHAPTER 05</div>
         <h2 class="reveal">把聲音留下來：她們如何看見自己</h2>
-        <p class="reveal">這一段用「左側固定影片＋右側引言高亮」讓讀者跟著一句句話走。你之後可以把逐字稿精選貼進去。</p>
+        <p class="reveal">左側固定影片，右側引言逐段高亮。你把逐字稿精選句換進去就會很有「敘事節奏」。</p>
 
         <div class="sv-wrap">
           <div class="sv-video reveal">
@@ -1068,7 +1049,7 @@
           <div class="sv-lines">
             <div class="sv-line reveal js-sv-line is-active">
               <div class="quoteText">「大家以為紅包是在買什麼，但其實我們賣的是表演、是專業。」</div>
-              <div class="who">— 受訪者 A（可改成：楊雅喬）</div>
+              <div class="who">— 受訪者 A</div>
             </div>
 
             <div class="sv-line reveal js-sv-line">
@@ -1078,7 +1059,7 @@
 
             <div class="sv-line reveal js-sv-line">
               <div class="quoteText">「真正懂的人不會吵，他們坐著聽，紅包只是最後的回應。」</div>
-              <div class="who">— 受訪者 B（可改成：護心／團長或觀眾）</div>
+              <div class="who">— 受訪者 B</div>
             </div>
 
             <div class="sv-line reveal js-sv-line">
@@ -1105,61 +1086,16 @@
   </div>
 
   <script>
-    // ============= Helpers =============
+    // =============================
+    // Core settings
+    // =============================
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function clamp(n, min, max){ return Math.min(max, Math.max(min, n)); }
+    const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
-    function setActiveStep(steps, activeEl){
-      steps.forEach(s => s.classList.toggle('is-active', s === activeEl));
-    }
-
-    function setStickyMedia(containerEl, kind, src){
-      // containerEl = .sticky-media
-      if(!containerEl) return;
-      const oldVideo = containerEl.querySelector('video');
-      const oldImg = containerEl.querySelector('img');
-
-      if(kind === 'video'){
-        if(oldImg) oldImg.remove();
-        if(!oldVideo){
-          const v = document.createElement('video');
-          v.muted = true;
-          v.loop = true;
-          v.playsInline = true;
-          v.preload = 'metadata';
-          const s = document.createElement('source');
-          s.src = src;
-          s.type = 'video/mp4';
-          v.appendChild(s);
-          containerEl.prepend(v);
-          v.play().catch(()=>{});
-        }else{
-          const source = oldVideo.querySelector('source');
-          if(source && source.src !== src){
-            source.src = src;
-            oldVideo.load();
-          }
-          oldVideo.play().catch(()=>{});
-        }
-      }else{
-        // img
-        if(oldVideo) oldVideo.pause();
-        if(oldVideo) oldVideo.remove();
-        if(oldImg){
-          oldImg.src = src;
-        }else{
-          const img = document.createElement('img');
-          img.src = src;
-          img.alt = "";
-          img.loading = "eager";
-          img.decoding = "async";
-          containerEl.prepend(img);
-        }
-      }
-    }
-
-    // ============= Hero entrance + typewriter =============
+    // =============================
+    // Hero entrance + typewriter
+    // =============================
     (function initHero(){
       const heroEls = document.querySelectorAll('.hero-entrance');
       requestAnimationFrame(()=> heroEls.forEach(el=> el.classList.add('is-visible')));
@@ -1206,7 +1142,9 @@
       })();
     })();
 
-    // ============= Reveal on scroll =============
+    // =============================
+    // Reveal-on-scroll
+    // =============================
     (function initReveal(){
       const els = document.querySelectorAll('.reveal');
       const io = new IntersectionObserver((entries)=>{
@@ -1220,13 +1158,12 @@
       els.forEach(el=> io.observe(el));
     })();
 
-    // ============= Mini nav active + progress bar =============
+    // =============================
+    // Mini nav active + progress
+    // =============================
     (function initNav(){
       const links = Array.from(document.querySelectorAll('.mini-nav a[data-section]'));
-      const sections = links
-        .map(a => document.getElementById(a.dataset.section))
-        .filter(Boolean);
-
+      const sections = links.map(a => document.getElementById(a.dataset.section)).filter(Boolean);
       const fill = document.getElementById('progress-fill');
 
       function updateProgress(){
@@ -1234,17 +1171,15 @@
         const scrollTop = doc.scrollTop || document.body.scrollTop;
         const scrollHeight = doc.scrollHeight - doc.clientHeight;
         const p = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
-        if(fill) fill.style.width = (p*100).toFixed(2) + '%';
+        if(fill) fill.style.width = (p * 100).toFixed(2) + '%';
       }
 
       const sio = new IntersectionObserver((entries)=>{
-        // pick the most visible section
+        // choose most visible section
         let best = null;
-        entries.forEach(e=>{
-          if(!best || e.intersectionRatio > best.intersectionRatio){
-            best = e;
-          }
-        });
+        for(const e of entries){
+          if(!best || e.intersectionRatio > best.intersectionRatio) best = e;
+        }
         if(best && best.isIntersecting){
           const id = best.target.id;
           links.forEach(a => a.classList.toggle('active', a.dataset.section === id));
@@ -1256,57 +1191,94 @@
       updateProgress();
     })();
 
-    // ============= Sticky media switch (Chapter 01 + 02) =============
+    // =============================
+    // Sticky media switching (Chapter 01 + 02)
+    // - Chapter 01: just swap <img id="compare-media">
+    // - Chapter 02: swap between <video> and <img> inside #chapter2-media
+    // =============================
     (function initStickySwitch(){
-      // Chapter 01
+      // ---------- Chapter 01 ----------
       const steps1 = Array.from(document.querySelectorAll('.js-sticky-step'));
-      const stickyMedia1 = document.querySelector('#chapter-hook .sticky-media');
+      const compareImg = document.getElementById('compare-media');
+
+      function setActive(steps, activeEl){
+        steps.forEach(s => s.classList.toggle('is-active', s === activeEl));
+      }
+
       const io1 = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
           if(e.isIntersecting){
             const el = e.target;
-            setActiveStep(steps1, el);
-            const kind = el.dataset.kind || 'img';
+            setActive(steps1, el);
             const src = el.dataset.media;
-            setStickyMedia(stickyMedia1, kind, src);
+            if(compareImg && src) compareImg.src = src;
           }
         });
       }, {threshold: 0.55});
       steps1.forEach(s=> io1.observe(s));
 
-      // Chapter 02
+      // ---------- Chapter 02 ----------
       const steps2 = Array.from(document.querySelectorAll('.js-sticky-step-2'));
-      const stickyMedia2 = document.querySelector('#chapter-redpacket .sticky-media');
+      const mediaBox = document.getElementById('chapter2-media');
+      let chapter2VideoMarkup = mediaBox ? mediaBox.innerHTML : "";
+
+      function renderChapter2(kind, src){
+        if(!mediaBox) return;
+
+        // kind: "img" or "video" (預設 img)
+        if(kind === 'video'){
+          // restore video template, then set src if provided
+          mediaBox.innerHTML = chapter2VideoMarkup;
+          const v = mediaBox.querySelector('video');
+          const s = mediaBox.querySelector('source');
+          if(s && src) s.src = src;
+          if(v){
+            v.load();
+            v.play().catch(()=>{});
+          }
+          return;
+        }
+
+        // img
+        mediaBox.innerHTML = `
+          <img src="${src || ''}" alt="" loading="eager" decoding="async" />
+        `;
+      }
+
       const io2 = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
           if(e.isIntersecting){
             const el = e.target;
-            setActiveStep(steps2, el);
-            const kind = el.dataset.kind || 'img';
-            const src = el.dataset.media;
-            setStickyMedia(stickyMedia2, kind, src);
+            setActive(steps2, el);
+            const kind = (el.dataset.kind || 'img').toLowerCase();
+            const src = el.dataset.media || '';
+            renderChapter2(kind, src);
           }
         });
       }, {threshold: 0.55});
       steps2.forEach(s=> io2.observe(s));
 
-      // auto play loop video when visible
-      const redLoop = document.getElementById('redpacket-loop');
-      if(redLoop){
+      // auto play the original redpacket video when its chapter enters (if currently video)
+      const ch2 = document.getElementById('chapter-redpacket');
+      if(ch2){
         const vio = new IntersectionObserver((entries)=>{
           entries.forEach(e=>{
             if(e.isIntersecting){
-              redLoop.play().catch(()=>{});
+              const v = mediaBox && mediaBox.querySelector('video');
+              if(v) v.play().catch(()=>{});
             }else{
-              redLoop.pause();
+              const v = mediaBox && mediaBox.querySelector('video');
+              if(v) v.pause();
             }
           });
-        }, {threshold: 0.2});
-        vio.observe(redLoop);
+        }, {threshold: 0.18});
+        vio.observe(ch2);
       }
     })();
 
-    // ============= Chapter 03 "light up" =============
+    // =============================
+    // Chapter 03: order-stage lit
+    // =============================
     (function initOrderStage(){
       const stage = document.getElementById('order-stage');
       if(!stage) return;
@@ -1318,7 +1290,9 @@
       io.observe(stage);
     })();
 
-    // ============= Chapter 04 Horizontal scroll =============
+    // =============================
+    // Chapter 04: Horizontal scroll
+    // =============================
     (function initHScroll(){
       const section = document.getElementById('chapter-elements');
       const track = document.getElementById('hscroll-track');
@@ -1326,19 +1300,19 @@
       if(!section || !track || !spacer) return;
 
       const panels = Array.from(track.querySelectorAll('.panel'));
-      const n = panels.length || 1;
+      const n = Math.max(1, panels.length);
+
+      // Ensure track width matches number of panels
       track.style.width = (n * 100) + 'vw';
 
-      // spacer height: each panel ~ 90vh scroll
-      const scrollPerPanel = 90; // vh
-      spacer.style.height = (scrollPerPanel * (n - 1) + 120) + 'vh';
+      // Spacer height tuned by panels count (避免太短/太長)
+      const scrollPerPanelVh = 90;
+      spacer.style.height = (scrollPerPanelVh * (n - 1) + 120) + 'vh';
 
       function update(){
-        const pin = section.querySelector('.hscroll-pin');
-        if(!pin) return;
-
         const rect = spacer.getBoundingClientRect();
         const viewH = window.innerHeight;
+
         const total = spacer.offsetHeight - viewH;
         const progressed = clamp((-rect.top) / (total || 1), 0, 1);
 
@@ -1352,7 +1326,9 @@
       update();
     })();
 
-    // ============= Modal from panels =============
+    // =============================
+    // Modal (Chapter 04)
+    // =============================
     (function initModal(){
       const backdrop = document.getElementById('modal-backdrop');
       const closeBtn = document.getElementById('modal-close');
@@ -1361,15 +1337,24 @@
       const mediaEl = document.getElementById('modal-media');
       const capEl = document.getElementById('modal-caption');
 
+      if(!backdrop || !closeBtn || !titleEl || !bodyEl || !mediaEl || !capEl) return;
+
       function openModal(data){
-        if(!backdrop) return;
         backdrop.classList.add('open');
         backdrop.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
 
         titleEl.textContent = data.title || '';
         bodyEl.innerHTML = '';
         mediaEl.innerHTML = '';
         capEl.textContent = data.caption || '';
+
+        if(data.subtitle){
+          const p = document.createElement('p');
+          p.className = 'note';
+          p.textContent = data.subtitle;
+          bodyEl.appendChild(p);
+        }
 
         if(data.body){
           const p = document.createElement('p');
@@ -1383,7 +1368,7 @@
           v.playsInline = true;
           v.preload = 'metadata';
           const s = document.createElement('source');
-          s.src = data.mediaSrc;
+          s.src = data.mediaSrc || '';
           s.type = 'video/mp4';
           v.appendChild(s);
           mediaEl.appendChild(v);
@@ -1396,13 +1381,10 @@
           mediaEl.appendChild(img);
         }
 
-        // focus for a11y
         closeBtn.focus();
-        document.body.style.overflow = 'hidden';
       }
 
       function closeModal(){
-        if(!backdrop) return;
         backdrop.classList.remove('open');
         backdrop.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
@@ -1413,25 +1395,24 @@
           const panel = btn.closest('.panel');
           if(!panel) return;
           openModal({
-            title: panel.dataset.title,
-            body: panel.dataset.body,
+            title: panel.dataset.title || '',
+            subtitle: panel.dataset.subtitle || '',
+            body: panel.dataset.body || '',
             mediaType: panel.dataset.mediaType || 'img',
-            mediaSrc: panel.dataset.mediaSrc,
+            mediaSrc: panel.dataset.mediaSrc || '',
             caption: panel.dataset.mediaCaption || ''
           });
         });
       });
 
-      closeBtn && closeBtn.addEventListener('click', closeModal);
-      backdrop && backdrop.addEventListener('click', (e)=>{
-        if(e.target === backdrop) closeModal();
-      });
-      document.addEventListener('keydown', (e)=>{
-        if(e.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
-      });
+      closeBtn.addEventListener('click', closeModal);
+      backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) closeModal(); });
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && backdrop.classList.contains('open')) closeModal(); });
     })();
 
-    // ============= Chapter 05 scroll-highlight + video play/pause =============
+    // =============================
+    // Chapter 05: quote highlight + video play/pause
+    // =============================
     (function initInterview(){
       const video = document.getElementById('interview-video');
       const lines = Array.from(document.querySelectorAll('.js-sv-line'));
@@ -1439,11 +1420,8 @@
       if(video){
         const vio = new IntersectionObserver((entries)=>{
           entries.forEach(e=>{
-            if(e.isIntersecting){
-              video.play().catch(()=>{});
-            }else{
-              video.pause();
-            }
+            if(e.isIntersecting) video.play().catch(()=>{});
+            else video.pause();
           });
         }, {threshold: 0.25});
         vio.observe(video);
@@ -1452,7 +1430,7 @@
       const io = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
           if(e.isIntersecting){
-            lines.forEach(l=> l.classList.toggle('is-active', l === e.target));
+            lines.forEach(l => l.classList.toggle('is-active', l === e.target));
           }
         });
       }, {threshold: 0.55});
